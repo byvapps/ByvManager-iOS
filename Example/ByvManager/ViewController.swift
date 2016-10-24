@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import ByvManager
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var baseUrlLbl: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        baseUrlLbl.text = ByvManager.sharedInstance.baseUrl
     }
 
     override func didReceiveMemoryWarning() {
