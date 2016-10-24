@@ -2,7 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>baseUrl</key>
-	<string>http://138.68.136.65:3000/hola</string>
+	<key>baseUrl_development</key>
+	<string>http://138.68.136.65:3000</string>
+	<key>baseUrl_production</key>
+	<string>http://138.68.136.65</string>
 </dict>
 </plist>

@@ -8,6 +8,20 @@
 
 import Foundation
 
+public enum Environment {
+    case notDefinedEnvironment
+    case developmentEnvironment
+    case productionEnvironment
+    
+    func configBaseUrlKey() -> String {
+        switch self {
+            case .developmentEnvironment: return "baseUrl_development"
+            case .productionEnvironment: return "baseUrl_production"
+            case .notDefinedEnvironment: return "baseUr"
+        }
+    }
+}
+
 public class ByvManager {
     
     // MARK: - Singleton
@@ -18,7 +32,8 @@ public class ByvManager {
     public static let sharedInstance = ByvManager()
     
     public var baseUrl: String
-    public var initialized: Bool = false;
+    public var environment: Environment
+    public var configuration: NSDictionary
     
     // MARK: - Init
     
@@ -27,7 +42,37 @@ public class ByvManager {
     //
     private init() {
         baseUrl = ""
+        environment = .notDefinedEnvironment
+        configuration = NSDictionary()
     } //This prevents others from using the default '()' initializer for this class.
+    
+    
+    // MARK: - Environment
+    
+    //
+    // Set Environment
+    //
+    public class func setEnvironment(_ env: Environment) {
+        if (sharedInstance.environment != env) {
+            sharedInstance.environment = env
+            let key = sharedInstance.environment.configBaseUrlKey()
+            let dic = sharedInstance.configuration
+            if let newUrl = dic[key] {
+                sharedInstance.baseUrl = newUrl as! String
+            } else {
+                print("NO EXISTE LA BASE URL EN EL ARCHIVO DE CONFIGURACIÓN <\(key)>!!!")
+                fatalError()
+            }
+        }
+    }
+    
+    //
+    // Get Environment
+    //
+    public class func getEnvironment() -> Environment {
+        return sharedInstance.environment
+    }
+    
     
     // MARK: - Configure
     
@@ -36,9 +81,8 @@ public class ByvManager {
     //
     func configure(_ path: String) {
         if let dict = NSDictionary(contentsOfFile: path) {
-            // Use your dict here
-            initialized = true
-            baseUrl = dict["baseUrl"] as! String
+            configuration = dict
+            ByvManager.setEnvironment(.developmentEnvironment)
             print("baseUrl: \(baseUrl)")
         } else {
             print("NO EXISTE EL FICHERO DE CONFIGURACIÓN EN LA RUTA <\(path)>!!!")
@@ -65,7 +109,6 @@ public class ByvManager {
     public class func configure(){
         ByvManager.configure("byv-config")
     }
-    
     
     // MARK: - AppDelegateMethods
     
