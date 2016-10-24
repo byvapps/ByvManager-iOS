@@ -116,7 +116,7 @@ public class ByvManager {
     // Custom init to build the spinner UI
     //
     public class func didBecomeActive() {
-        
+        Device.setDeviceActive(true)
     }
 }
 
