@@ -13,6 +13,7 @@
 		3A82182C1DCA6DC60006CE3A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */; };
 		3AB7D4EE1DC0FDA2009AA63B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */; };
 		3AE299BA1DBA5CB900E31737 /* byv-config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AE299B91DBA5CB900E31737 /* byv-config.plist */; };
+		3AE548EC1DCBB13200EAC28E /* ByvAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 		3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		3AE299B91DBA5CB900E31737 /* byv-config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "byv-config.plist"; sourceTree = "<group>"; };
+		3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByvAppDelegate.swift; sourceTree = "<group>"; };
 		3AFCAD6D1DCA71B80021D1C1 /* ByvManager_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ByvManager_Example.entitlements; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ByvManager_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ByvManager_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				3AE299B91DBA5CB900E31737 /* byv-config.plist */,
 				3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */,
+				3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				3A156CE01DBF767B003944BC /* FacebookWebViewController.swift */,
@@ -395,6 +398,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A82182A1DCA2D850006CE3A /* LoginViewController.swift in Sources */,
+				3AE548EC1DCBB13200EAC28E /* ByvAppDelegate.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				3A156CE11DBF767B003944BC /* FacebookWebViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,

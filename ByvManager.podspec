@@ -29,7 +29,6 @@ TODO: Add long description of the pod here.
   s.social_media_url = 'https://twitter.com/byvapps'
 
   s.ios.deployment_target = '9.0'
-  s.ios.vendored_frameworks = 'Pods/*/Frameworks/frameworks*.framework'
 
   s.source_files = 'ByvManager/Classes/**/*'
   
@@ -39,29 +38,8 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # Specify what frameworks this depends on.
-  s.frameworks = [
-    'AddressBook', # FirebaseAnalytics.
-    'AdSupport', # FirebaseAnalytics.
-    'CFNetwork', # FirebaseDatabase.
-    'CoreGraphics',
-    'SafariServices', # FirebaseAnalytics.
-    'Security', # FirebaseAnalytics, FirebaseAuth, FirebaseDatabase.
-    'StoreKit', # FirebaseAnalytics.
-    'SystemConfiguration', # FirebaseAnalytics, FirebaseDatabase.
-    'UIKit',
-  ]
-
-  s.libraries = [
-    'c++', # FirebaseAnalytics.
-    'icucore', # FirebaseDatabase.
-    'sqlite3', # FirebaseAnalytics.
-    'z', # FirebaseAnalytics.
-  ]
 
   s.dependency 'Alamofire', '~> 4.0'
   s.dependency 'SwiftSpinner', '~> 1.0'
-  s.dependency 'Firebase/Core'
-  s.dependency 'Firebase/DynamicLinks'
 
 end

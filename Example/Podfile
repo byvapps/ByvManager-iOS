@@ -2,6 +2,8 @@ use_frameworks!
 
 target 'ByvManager_Example' do
   pod 'ByvManager', :path => '../'
+  pod 'Firebase'
+  pod 'Firebase/DynamicLinks'
 
   target 'ByvManager_Tests' do
     inherit! :search_paths

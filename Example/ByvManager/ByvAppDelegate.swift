@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ByvManager
 import FirebaseCore
 import FirebaseDynamicLinks
 
@@ -19,8 +20,7 @@ open class ByvAppDelegate: UIResponder, UIApplicationDelegate {
         
         ByvManager.configure()
         
-        if let firebase = Configuration.firebase("enabled") {
-            
+        if let firebase = Configuration.firebase("enabled"), firebase as? Bool == true {
             // Dynamic links
             if let CUSTOM_URL_SCHEME = Configuration.firebase("dynamic_link_custom_url") as? String {
                 // Set deepLinkURLScheme to the custom URL scheme you defined in your
@@ -63,7 +63,7 @@ open class ByvAppDelegate: UIResponder, UIApplicationDelegate {
     
     open func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
-        if let CUSTOM_URL_SCHEME = Configuration.firebase("dynamic_link_custom_url") as? String {
+        if (Configuration.firebase("dynamic_link_custom_url") as? String) != nil {
             let dynamicLink = FIRDynamicLinks.dynamicLinks()?.dynamicLink(fromCustomSchemeURL: url)
             if let dynamicLink = dynamicLink {
                 // Is a dynamic link, probably for a first open
