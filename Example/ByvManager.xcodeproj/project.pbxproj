@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A156CE11DBF767B003944BC /* FacebookWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A156CE01DBF767B003944BC /* FacebookWebViewController.swift */; };
+		3A167D7A1DC36B0F0063ACB0 /* RefreshTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A167D791DC36B0F0063ACB0 /* RefreshTestViewController.swift */; };
+		3A82182A1DCA2D850006CE3A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8218291DCA2D850006CE3A /* LoginViewController.swift */; };
+		3A82182C1DCA6DC60006CE3A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */; };
+		3AB7D4EE1DC0FDA2009AA63B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */; };
 		3AE299BA1DBA5CB900E31737 /* byv-config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AE299B91DBA5CB900E31737 /* byv-config.plist */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -30,7 +35,13 @@
 
 /* Begin PBXFileReference section */
 		1DC881A3CBD1079131EE9BA2 /* Pods_ByvManager_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ByvManager_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A156CE01DBF767B003944BC /* FacebookWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookWebViewController.swift; sourceTree = "<group>"; };
+		3A167D791DC36B0F0063ACB0 /* RefreshTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshTestViewController.swift; sourceTree = "<group>"; };
+		3A8218291DCA2D850006CE3A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		3AE299B91DBA5CB900E31737 /* byv-config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "byv-config.plist"; sourceTree = "<group>"; };
+		3AFCAD6D1DCA71B80021D1C1 /* ByvManager_Example.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ByvManager_Example.entitlements; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* ByvManager_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ByvManager_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +96,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				3AFCAD6D1DCA71B80021D1C1 /* ByvManager_Example.entitlements */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for ByvManager */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -107,8 +119,13 @@
 			isa = PBXGroup;
 			children = (
 				3AE299B91DBA5CB900E31737 /* byv-config.plist */,
+				3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				3A156CE01DBF767B003944BC /* FacebookWebViewController.swift */,
+				3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */,
+				3A8218291DCA2D850006CE3A /* LoginViewController.swift */,
+				3A167D791DC36B0F0063ACB0 /* RefreshTestViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -218,10 +235,21 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = K8HL8GA5DS;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = K8HL8GA5DS;
 						LastSwiftMigration = 0800;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -253,6 +281,7 @@
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				3A82182C1DCA6DC60006CE3A /* GoogleService-Info.plist in Resources */,
 				3AE299BA1DBA5CB900E31737 /* byv-config.plist in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
 			);
@@ -365,8 +394,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A82182A1DCA2D850006CE3A /* LoginViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				3A156CE11DBF767B003944BC /* FacebookWebViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				3A167D7A1DC36B0F0063ACB0 /* RefreshTestViewController.swift in Sources */,
+				3AB7D4EE1DC0FDA2009AA63B /* RegisterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,10 +528,14 @@
 			baseConfigurationReference = 7FC0389CC952EAB561B85F5E /* Pods-ByvManager_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ByvManager_Example.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = K8HL8GA5DS;
 				INFOPLIST_FILE = ByvManager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.byvapps.ByvManager-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -509,10 +546,14 @@
 			baseConfigurationReference = 841951B33B6D70592F202219 /* Pods-ByvManager_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ByvManager_Example.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = K8HL8GA5DS;
 				INFOPLIST_FILE = ByvManager/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.byvapps.ByvManager-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -522,6 +563,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F96FC4B39738EE9090A71616 /* Pods-ByvManager_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = K8HL8GA5DS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -531,10 +573,12 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ByvManager_Example.app/ByvManager_Example";
 			};
 			name = Debug;
 		};
@@ -542,15 +586,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8968D9EBC80D176E99AE4174 /* Pods-ByvManager_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = K8HL8GA5DS;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ByvManager_Example.app/ByvManager_Example";
 			};
 			name = Release;
 		};

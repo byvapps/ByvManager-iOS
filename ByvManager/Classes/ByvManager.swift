@@ -8,19 +8,7 @@
 
 import Foundation
 
-public enum Environment {
-    case notDefinedEnvironment
-    case developmentEnvironment
-    case productionEnvironment
-    
-    func configBaseUrlKey() -> String {
-        switch self {
-            case .developmentEnvironment: return "baseUrl_development"
-            case .productionEnvironment: return "baseUrl_production"
-            case .notDefinedEnvironment: return "baseUr"
-        }
-    }
-}
+// MARK: - ByvManager
 
 public class ByvManager {
     
@@ -31,9 +19,8 @@ public class ByvManager {
     //
     public static let sharedInstance = ByvManager()
     
-    public var baseUrl: String
-    public var environment: Environment
     public var configuration: NSDictionary
+    private var urls: Dictionary <String, String>
     
     // MARK: - Init
     
@@ -41,9 +28,17 @@ public class ByvManager {
     // Custom init to build the spinner UI
     //
     private init() {
-        baseUrl = ""
-        environment = .notDefinedEnvironment
         configuration = NSDictionary()
+        urls = ["DEVICES_URL":"api/devices",
+                 "REGISTER_URL":"api/users",
+                 "LOGIN_URL":"auth/token",
+                 "REFRESH_TOKEN_URL":"auth/token",
+                 "FACBEBOOK_URL":"auth/facebook/app",
+                 "TWITTER_URL":"auth/twitter/app",
+                 "LINKEDIN_URL":"auth/linkedind/app",
+                 "GOOGLE_URL":"auth/google/app",
+                 "SOCIAL_SUCCESS_URL":"/auth/webapp/success",
+                 "LOGOUT_URL":"/auth/logout"]
     } //This prevents others from using the default '()' initializer for this class.
     
     
@@ -53,40 +48,9 @@ public class ByvManager {
     // Set Environment
     //
     public class func setEnvironment(_ env: Environment) {
-        if (sharedInstance.environment != env) {
-            sharedInstance.environment = env
-            let key = sharedInstance.environment.configBaseUrlKey()
-            let dic = sharedInstance.configuration
-            if let newUrl = dic[key] {
-                sharedInstance.baseUrl = newUrl as! String
-            } else {
-                print("NO EXISTE LA BASE URL EN EL ARCHIVO DE CONFIGURACIÓN <\(key)>!!!")
-                fatalError()
-            }
-        }
-    }
-    
-    //
-    // Get Environment
-    //
-    public class func getEnvironment() -> Environment {
-        return sharedInstance.environment
-    }
-    
-    
-    // MARK: - Configure
-    
-    //
-    // Configure with path
-    //
-    func configure(_ path: String) {
-        if let dict = NSDictionary(contentsOfFile: path) {
-            configuration = dict
-            ByvManager.setEnvironment(.developmentEnvironment)
-            print("baseUrl: \(baseUrl)")
-        } else {
-            print("NO EXISTE EL FICHERO DE CONFIGURACIÓN EN LA RUTA <\(path)>!!!")
-            fatalError()
+        if Environment.current != env {
+            Environment.current = env
+            print("New baseUrl: \(Environment.baseUrl())")
         }
     }
     
@@ -94,29 +58,46 @@ public class ByvManager {
     // Configure with file name
     //
     public class func configure(_ fileName: String) {
-        if let path: String = Bundle.main.path(forResource: fileName, ofType: "plist", inDirectory: nil) {
-            sharedInstance.configure(path)
-        } else {
-            //CRASH
-            print("NO EXISTE EL FICHERO DE CONFIGURACIÓN CON NOMBRE <\(fileName).plist>!!!")
-            fatalError()
-        }
+        Configuration.configure(fileName)
     }
     
     //
     // Configure with default file name "byv-config"
     //
-    public class func configure(){
-        ByvManager.configure("byv-config")
+    public class func configure() {
+        Configuration.configure("byv-config")
+    }
+    
+    //
+    // Get Environment
+    //
+    public class func getEnvironment() -> Environment {
+        return Environment.current
+    }
+    
+    
+    public class func path(_ resource: String) -> String? {
+        return sharedInstance.urls[resource]! as String
+    }
+    
+    public class func baseUrl() -> String {
+        return Environment.baseUrl()
     }
     
     // MARK: - AppDelegateMethods
     
-    //
-    // Custom init to build the spinner UI
-    //
+    
     public class func didBecomeActive() {
         Device.setDeviceActive(true)
+    }
+    
+    public class func didBecomeInactive() {
+        Device.setDeviceActive(false)
+    }
+    
+    public class func checkUrl(_ url: URL) -> Bool {
+        
+        return false
     }
 }
 

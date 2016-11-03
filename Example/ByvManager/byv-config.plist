@@ -2,9 +2,35 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>baseUrl_development</key>
-	<string>http://138.68.136.65:3000</string>
-	<key>baseUrl_production</key>
-	<string>http://138.68.136.65</string>
+	<key>google</key>
+	<dict>
+		<key>google_api_key</key>
+		<string>AIzaSyDYWYcUJKzTwkR2cVDvlWzADvwsF7wYffk</string>
+	</dict>
+	<key>firebase</key>
+	<dict>
+		<key>enabled</key>
+		<false/>
+		<key>dynamic_link_url</key>
+		<string>https://rb3h2.app.goo.gl/</string>
+		<key>dynamic_link_custom_url</key>
+		<string>byvplayground</string>
+	</dict>
+	<key>auth</key>
+	<dict>
+		<key>byv_client_secret</key>
+		<string>secret-app</string>
+		<key>byv_client_id</key>
+		<string>app</string>
+	</dict>
+	<key>baseUrl</key>
+	<dict>
+		<key>development</key>
+		<string>http://192.168.1.108:3000</string>
+		<key>production</key>
+		<string>http://138.68.136.65</string>
+	</dict>
+	<key>override</key>
+	<dict/>
 </dict>
 </plist>
