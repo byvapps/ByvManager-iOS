@@ -41,7 +41,9 @@ class LoginViewController: UIViewController {
 
     @IBAction func requestResetPassword(_ sender: AnyObject) {
         self.view .endEditing(true)
-        
+        Auth.requestResetPassword(mail: mailField.text!, spinner: NSLocalizedString("Conectando...", comment: "Login Spinner"), success:{ (response) in
+            self.dismiss(animated: true, completion: nil)
+        })
     }
     
     @IBAction func MagicLink(_ sender: AnyObject) {

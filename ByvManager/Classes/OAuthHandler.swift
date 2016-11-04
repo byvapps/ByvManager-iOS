@@ -105,24 +105,28 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
             ]
             
             print(parameters)
-            sessionManager.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default)
-                .responseJSON { [weak self] response in
-                    guard let strongSelf = self else { print("strongSelf"); return }
-                    print("refreshing!!!")
-                    if let response = response.response!.statusCode as? HTTPURLResponse, response.statusCode == 401 {
-                        //Refresh token invalid
-                        Credentials.removeCredentials()
-                        completion(false, nil, nil)
-                    } else {
+            var headers: HTTPHeaders? = nil
+            if let dId = Device.id {
+                headers = ["DeviceId": "\(dId)"]
+            }
+            sessionManager.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseData { response in
+                    switch response.result {
+                    case .success:
                         if let cred = Credentials.store(response.data) {
                             completion(true, cred.access_token, cred.refresh_token)
                         } else {
                             completion(false, nil, nil)
                         }
+                    case .failure(let error):
+                        if response.response?.statusCode == 401 {
+                            //Refresh token invalid
+                            Credentials.removeCredentials()
+                            completion(false, nil, nil)
+                        }
                     }
-                    
-                    strongSelf.isRefreshing = false
-            }
+                }
         } else {
             Credentials.removeCredentials()
             completion(false, nil, nil)

@@ -115,7 +115,7 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
             }
             
             if let code = params[self.type.codeKey()] as! String? {
-                Auth.socialLogin(code: code, success: { (data) in
+                Auth.socialLogin(code: code, spinner:"Conectando...", success: { (data) in
                     self.close(sender: nil)
                 })
             }

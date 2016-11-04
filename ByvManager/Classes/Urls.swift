@@ -34,13 +34,31 @@ public func url_request_magic() -> String {
     }
 }
 
-public func url_request_change_password() -> String {
+public func url_request_magic_callback() -> String {
+    if let path = Configuration.override("TOKEN_URL") as? String {
+        return path
+    } else {
+        return "auth-password/magic/callback"
+    }
+}
+
+public func url_request_reset_password() -> String {
     if let path = Configuration.override("TOKEN_URL") as? String {
         return path
     } else {
         return "auth-password/api/reset"
     }
 }
+
+public func url_request_reset_password_callback() -> String {
+    if let path = Configuration.override("TOKEN_URL") as? String {
+        return path
+    } else {
+        return "auth-password/reset/callback"
+    }
+}
+        
+///auth-password/reset/callback
 
 public func url_token_social() -> String {
     if let path = Configuration.override("SOCIAL_TOKEN_URL") as? String {

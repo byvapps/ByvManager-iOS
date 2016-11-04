@@ -47,7 +47,7 @@ public struct ConManager {
             manager.retrier = oAuthHandler
         }
         
-        var headers: HTTPHeaders? = ["Content-Type": "application/json"]
+        var headers: HTTPHeaders? = nil
         if sendDevice, let dId = Device.id {
             headers = ["DeviceId": "\(dId)"]
         }

@@ -8,6 +8,7 @@
 
 import UIKit
 import ByvManager
+import Firebase
 
 class ViewController: UIViewController {
     
@@ -19,6 +20,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         socialWebView.loadPreWeb()
+        
+        /*
+        let token = FIRInstanceID.instanceID().token()
+        print("InstanceID token: \(token!)")
+ */
         
         /*
         URLShortener.short("http://www.google.com", spinner: nil) { (shortUrl) in
@@ -45,7 +51,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func showProfile(_ sender: AnyObject) {
-        let url = "\(url_profile())/deviceRequired"
+        let url = "\(url_profile())"
         self.profileTextView.text = ""
         ConManager.GET(url, params: nil, auth: true, spinner: "Cargando perfil...", success: { (responseData) in
             if let data = responseData, let text: String = String(data: data, encoding: .utf8) {
@@ -69,6 +75,12 @@ class ViewController: UIViewController {
     
     @IBAction func Google(_ sender: AnyObject) {
         self.loginSocial(SocialType.google)
+    }
+    
+    @IBAction func logout(_ sender: Any) {
+        Auth.logout(spinner: "Saliendo...", success: { (response) in
+            self.updateView()
+        })
     }
     
     func loginSocial(_ type: SocialType) {
