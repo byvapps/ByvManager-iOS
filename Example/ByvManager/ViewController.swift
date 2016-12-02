@@ -34,6 +34,32 @@ class ViewController: UIViewController {
             }
         }
         */
+        
+        ConManager.GET("api/search",
+                       params: ["offset": 0,
+                                "limit": 10],
+                       auth: false,
+                       background: false,
+                       success: { (responseData) in
+                        var pages = 0
+                        var total = 0
+                        if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
+                            let pagesInt: Int = Int(pagesStr),
+                            let totalStr: String = responseData?.response?.allHeaderFields["X-Total-Count"] as? String,
+                            let totalInt: Int = Int(totalStr){
+                            pages = pagesInt
+                            total = totalInt
+                        }
+                        
+                        print("START")
+                        print("Pages: \(pages)")
+                        print("Count: \(total)")
+                        
+                        let json = ConManager.jsonArray(responseData?.data)
+                        
+                        debugPrint(json)
+                        print("END")
+        });
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,8 +79,8 @@ class ViewController: UIViewController {
     @IBAction func showProfile(_ sender: AnyObject) {
         let url = "\(url_profile())"
         self.profileTextView.text = ""
-        ConManager.GET(url, params: nil, auth: true, spinner: "Cargando perfil...", success: { (responseData) in
-            if let data = responseData, let text: String = String(data: data, encoding: .utf8) {
+        ConManager.GET(url, params: nil, auth: true, background: false, success: { (responseData) in
+            if let data = responseData?.data, let text: String = String(data: data, encoding: .utf8) {
                 self.profileTextView.text = text
             }
             self.updateView()
@@ -78,7 +104,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func logout(_ sender: Any) {
-        Auth.logout(spinner: "Saliendo...", success: { (response) in
+        Auth.logout(background: false, success: { (response) in
             self.updateView()
         })
     }

@@ -132,7 +132,7 @@ public struct Device {
                               method: method,
                               encoding: JSONEncoding.default,
                               success: { (responseData) in
-                                if let data: Data = responseData {
+                                if let data: Data = responseData?.data {
                                     self.store(data)
                                 }
         })

@@ -41,5 +41,8 @@ TODO: Add long description of the pod here.
 
   s.dependency 'Alamofire', '~> 4.0'
   s.dependency 'SwiftSpinner', '~> 1.0'
+  s.dependency 'SVProgressHUD'
+  s.dependency 'ByvUtils'
+  # s.dependency 'Socket.IO-Client-Swift', '~> 8.1.1' # Or latest version
 
 end

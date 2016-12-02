@@ -36,4 +36,17 @@ public enum Environment {
     public static func baseUrl() -> String {
         return current.baseUrl()
     }
+    
+    public static func absoluteUrl(_ path: Any?) -> String? {
+        if var temp = path as? String {
+            if !temp.contains("http") {
+                if !temp.hasPrefix("/") {
+                    temp = "/" + temp
+                }
+                temp = Environment.baseUrl() + temp
+            }
+            return temp
+        }
+        return nil
+    }
 }

@@ -15,19 +15,19 @@ public struct Auth {
     private static let client_secret = Configuration.auth("byv_client_secret") as! String
     
     private static func authToken(params: Params,
-                                  spinner: String? = nil,
+                                  background: Bool = true,
                                   success: SuccessHandler? = nil,
                                   failed: ErrorHandler? = nil,
                                   completion: CompletionHandler? = nil) {
         ConManager.POST(url_token(),
                         params: params,
-                        spinner: spinner,
+                        background: background,
                         success: { (response) in
-                            debugPrint(ConManager.json(response))
-                            if let cred = Credentials.store(response) {
+                            debugPrint(response)
+                            if let cred = Credentials.store(response?.data) {
                                 success?(response)
                             } else {
-                                let error:ConError = ConError(status: 500, error_id: "", error_description: "", localized_description: "auth response format incorrect", data: response)
+                                let error:ConError = ConError(status: 500, error_id: "", error_description: "", localized_description: "auth response format incorrect", response: response)
                                 SwiftSpinner.show(duration: 5.0, title: NSLocalizedString("Error", comment: "Spinner")).addTapHandler({
                                     SwiftSpinner.hide()
                                 }, subtitle: error.localized_description)
@@ -40,7 +40,7 @@ public struct Auth {
     public static func register(mail: String,
                                 password: String,
                                 name: String? = nil,
-                                spinner: String? = nil,
+                                background: Bool = true,
                                 success: SuccessHandler? = nil,
                                 failed: ErrorHandler? = nil,
                                 completion: CompletionHandler? = nil) {
@@ -53,12 +53,12 @@ public struct Auth {
             params["name"] = name
         }
         
-        Auth.authToken(params: params, spinner: spinner, success: success, failed: failed, completion: completion)
+        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func login(mail: String,
                              password: String,
-                             spinner: String? = nil,
+                             background: Bool = true,
                              success: SuccessHandler? = nil,
                              failed: ErrorHandler? = nil,
                              completion: CompletionHandler? = nil) {
@@ -68,10 +68,10 @@ public struct Auth {
                               "username": mail,
                               "password": password]
         
-        Auth.authToken(params: params, spinner: spinner, success: success, failed: failed, completion: completion)
+        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
    
-    public static func logout(spinner: String? = nil,
+    public static func logout(background: Bool = true,
                              success: SuccessHandler? = nil,
                              failed: ErrorHandler? = nil,
                              completion: CompletionHandler? = nil) {
@@ -79,9 +79,9 @@ public struct Auth {
         ConManager.POST(url_logout(),
                         params: nil,
                         auth: true,
-                        spinner: spinner,
+                        background: background,
                         success: { (response) in
-                            debugPrint(ConManager.json(response))
+                            debugPrint(response?.result.value)
                             Credentials.removeCredentials()
                             success?(response)
         }, failed: failed, completion: completion)
@@ -89,7 +89,7 @@ public struct Auth {
 
     
     public static func socialLogin(code: String,
-                                   spinner: String? = nil,
+                                   background: Bool = true,
                                      success: SuccessHandler? = nil,
                                      failed: ErrorHandler? = nil,
                                      completion: CompletionHandler? = nil) {
@@ -98,11 +98,11 @@ public struct Auth {
                               "grant_type": "code",
                               "code": code]
         
-        Auth.authToken(params: params, spinner: spinner, success: success, failed: failed, completion: completion)
+        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func requestMagic(mail: String,
-                             spinner: String? = nil,
+                             background: Bool = true,
                              success: SuccessHandler? = nil,
                              failed: ErrorHandler? = nil,
                              completion: CompletionHandler? = nil) {
@@ -110,14 +110,14 @@ public struct Auth {
         
         ConManager.POST(url_request_magic(),
                         params: params,
-                        spinner: spinner,
+                        background: background,
                         success: { (response) in
                             success?(response)
                         }, failed: failed, completion: completion)
     }
     
     public static func magicLogin(code: String,
-                                    spinner: String? = nil,
+                                    background: Bool = true,
                                     success: SuccessHandler? = nil,
                                     failed: ErrorHandler? = nil,
                                     completion: CompletionHandler? = nil) {
@@ -126,11 +126,11 @@ public struct Auth {
                               "grant_type": "magic_link",
                               "code": code]
         
-        Auth.authToken(params: params, spinner: spinner, success: success, failed: failed, completion: completion)
+        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func requestResetPassword(mail: String,
-                                    spinner: String? = nil,
+                                    background: Bool = true,
                                     success: SuccessHandler? = nil,
                                     failed: ErrorHandler? = nil,
                                     completion: CompletionHandler? = nil) {
@@ -138,7 +138,7 @@ public struct Auth {
         
         ConManager.POST(url_request_reset_password(),
                         params: params,
-                        spinner: spinner,
+                        background: background,
                         success: { (response) in
                             success?(response)
         }, failed: failed, completion: completion)
@@ -146,7 +146,7 @@ public struct Auth {
     
     public static func resetLogin(code: String,
                                   password: String,
-                                  spinner: String? = nil,
+                                  background: Bool = true,
                                   success: SuccessHandler? = nil,
                                   failed: ErrorHandler? = nil,
                                   completion: CompletionHandler? = nil) {
@@ -156,14 +156,14 @@ public struct Auth {
                               "code": code,
                               "password": password]
         
-        Auth.authToken(params: params, spinner: spinner, success: success, failed: failed, completion: completion)
+        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func appOpenned(_ url: URL) -> Bool {
         if url.path.contains(url_request_magic_callback()) {
             // Magic link
             if let code = url.getQueryItemValueForKey(key: "code") {
-                Auth.magicLogin(code: code, spinner: "MAGIC!!!", success: { (response) in
+                Auth.magicLogin(code: code, background: false, success: { (response) in
                     print("MAGIC WORKING")
                 })
                 return true
@@ -186,7 +186,7 @@ public struct Auth {
                     UIAlertAction in
                     NSLog("OK Pressed")
                     if let password = alertController.textFields?[0].text {
-                        Auth.resetLogin(code: code, password: password, spinner: "RESETING!!!", success: { (response) in
+                        Auth.resetLogin(code: code, password: password, background: false, success: { (response) in
                             print("RESET WORKING")
                         })
                     }

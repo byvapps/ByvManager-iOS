@@ -202,7 +202,8 @@ extension ByvAppDelegate : UNUserNotificationCenterDelegate {
 extension ByvAppDelegate : FIRMessagingDelegate {
     // Receive data message on iOS 10 devices.
     public func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
-        print("%@", remoteMessage.appData)
+        print(remoteMessage)
+        print(remoteMessage.appData)
     }
 }
 // [END ios_10_message_handling]

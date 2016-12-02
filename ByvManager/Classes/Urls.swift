@@ -14,7 +14,7 @@ public func url_devices() -> String {
     if let path = Configuration.override("DEVICES_URL") as? String {
         return path
     } else {
-        return "devices/api"
+        return "device/api/devices"
     }
 }
 

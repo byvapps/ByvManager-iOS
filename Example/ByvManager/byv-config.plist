@@ -28,9 +28,16 @@
 		<key>development</key>
 		<string>http://192.168.1.108:3000</string>
 		<key>production</key>
-		<string>http://138.68.136.65</string>
+		<string>http://playground.byvapps.com</string>
 	</dict>
 	<key>override</key>
 	<dict/>
+	<key>panic</key>
+	<dict>
+		<key>development</key>
+		<string>panic/api/check/ios</string>
+		<key>production</key>
+		<string>panic/api/check/ios</string>
+	</dict>
 </dict>
 </plist>

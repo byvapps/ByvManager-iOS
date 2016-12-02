@@ -38,7 +38,7 @@ public enum SocialType {
         case .facebook: return "code"
         case .twitter: return "oauth_token"
         case .linkedin: return "code"
-        case .google: return url_google_login()
+        case .google: return "code"
         }
     }
 }
@@ -46,6 +46,7 @@ public enum SocialType {
 public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     private let html = "<!DOCTYPE html><html><head><style>body {text-align: center;font-family: sans-serif;color: #555;}.loader {border: 5px solid #f3f3f3;border-radius: 50%;border-top: 5px solid #888;width: 50px;height: 50px;margin: auto;margin-top: 20%;-webkit-animation: spin 2s linear infinite;animation: spin 1.4s linear infinite;}@-webkit-keyframes spin {0% { -webkit-transform: rotate(0deg); }100% { -webkit-transform: rotate(360deg); }}@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}</style></head><body><div class=\"loader\"></div></body></html>"
     private var _type: SocialType = .facebook
+    
     public var type: SocialType {
         get {
             return _type
@@ -56,7 +57,9 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
         }
     }
     
+    
     private var webView: UIWebView = UIWebView()
+    private var _code: String? = nil
     
     public func loadPreWeb() {
         
@@ -68,6 +71,8 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     override public func viewDidLoad() {
         super.viewDidLoad()
         webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.view.backgroundColor = UIColor.white
         
         self.view.addSubview(webView)
         
@@ -88,6 +93,8 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        _code = nil
+        webView.alpha = 1.0
         let url = "\(Environment.baseUrl())/\(type.path())"
         self.webView.delegate = self
         self.webView.loadRequest(URLRequest(url: URL(string: url)!))
@@ -115,9 +122,8 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
             }
             
             if let code = params[self.type.codeKey()] as! String? {
-                Auth.socialLogin(code: code, spinner:"Conectando...", success: { (data) in
-                    self.close(sender: nil)
-                })
+                _code = code
+                webView.alpha = 0.0
             }
             return true
         }
@@ -129,6 +135,13 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     }
     
     public func webViewDidFinishLoad(_ webView: UIWebView) {
+        
+        if let code = _code {
+            Auth.socialLogin(code: code, background: false, success: { (data) in
+                self.close(sender: nil)
+            })
+            _code = nil
+        }
         
 //        print("webViewDidFinishLoad")
 //        

@@ -30,8 +30,8 @@ class RefreshTestViewController: UIViewController {
         for index in 1...max {
             let url = "\(url_profile())/deviceRequired?attemp=\(index)"
             self.textView.text = self.textView.text.appending("\n\(url) - try")
-            ConManager.GET(url, params: nil, auth: true, spinner: nil, success: { (responseData) in
-                if ConManager.json(responseData)["id"] != nil {
+            ConManager.GET(url, params: nil, auth: true, success: { (responseData) in
+                if ConManager.json(responseData?.data)["id"] != nil {
                     self.textView.text = self.textView.text.appending("\n\(url) - ok")
                     ok += 1
                 }else {

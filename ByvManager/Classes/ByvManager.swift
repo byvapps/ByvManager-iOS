@@ -7,10 +7,13 @@
 //
 
 import Foundation
+import SVProgressHUD
 
 // MARK: - ByvManager
 
 public class ByvManager {
+    
+    //public static let sockets = Sockets()
     
     // MARK: - Singleton
     
@@ -25,9 +28,13 @@ public class ByvManager {
     // Custom init to build the spinner UI
     //
     private init() {
+        
     } //This prevents others from using the default '()' initializer for this class.
     
     
+    @objc public func hudTapped(_ notification: Notification) {
+        SVProgressHUD.dismiss()
+    }
     // MARK: - Environment
     
     //
@@ -59,10 +66,19 @@ public class ByvManager {
     
     public class func didBecomeActive() {
         Device.setDeviceActive(true)
+        //ByvManager.sockets.connect()
+        
+        NotificationCenter.default.addObserver(ByvManager.sharedInstance, selector: #selector(ByvManager.hudTapped(_:)), name:  Notification.Name("SVProgressHUDDidReceiveTouchEventNotification"), object: nil)
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.black)
+        
+        Panic.check()
     }
     
     public class func didBecomeInactive() {
         Device.setDeviceActive(false)
+        //ByvManager.sockets.disconnect()
+        
+        NotificationCenter.default.removeObserver(ByvManager.sharedInstance, name:  Notification.Name("SVProgressHUDDidReceiveTouchEventNotification"), object: nil)
     }
     
     @discardableResult

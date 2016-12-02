@@ -8,11 +8,11 @@
 
 import Foundation
 import Alamofire
-import SwiftSpinner
+import SVProgressHUD
 
 public typealias Params = [String: Any]
-public typealias ConError = (status: Int, error_id: String, error_description: String, localized_description: String, data: Data?)
-public typealias SuccessHandler = (_ response: Data?) -> Void
+public typealias ConError = (status: Int, error_id: String, error_description: String, localized_description: String, response: DataResponse<Data>?)
+public typealias SuccessHandler = (_ response: DataResponse<Data>?) -> Void
 public typealias ErrorHandler = (_ error: ConError) -> Void
 public typealias CompletionHandler = () -> Void
 
@@ -71,7 +71,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -80,7 +80,7 @@ public struct ConManager {
                               method: .options,
                               auth: auth,
                               encoding: encoding,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -89,7 +89,7 @@ public struct ConManager {
     public static func GET(_ path: URLConvertible,
                            params: Params? = nil,
                            auth: Bool = false,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -98,7 +98,25 @@ public struct ConManager {
                               method: .get,
                               auth: auth,
                               encoding: URLEncoding.default,
-                              spinner: spinner,
+                              background: background,
+                              success: success,
+                              failed: failed,
+                              completion: completion)
+    }
+    
+    public static func LIST(_ path: URLConvertible,
+                           params: Params? = nil,
+                           auth: Bool = false,
+                           background: Bool = true,
+                           success: SuccessHandler? = nil,
+                           failed: ErrorHandler? = nil,
+                           completion: CompletionHandler? = nil) {
+        ConManager.connection(path,
+                              params: params,
+                              method: .get,
+                              auth: auth,
+                              encoding: URLEncoding.default,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -108,7 +126,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -117,7 +135,7 @@ public struct ConManager {
                               method: .head,
                               auth: auth,
                               encoding: encoding,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -127,7 +145,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding? = JSONEncoding.default,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -136,7 +154,7 @@ public struct ConManager {
                               method: .post,
                               auth: auth,
                               encoding: encoding!,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -146,7 +164,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding? = JSONEncoding.default,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -155,7 +173,7 @@ public struct ConManager {
                               method: .put,
                               auth: auth,
                               encoding: encoding!,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -165,7 +183,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding? = JSONEncoding.default,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -174,7 +192,7 @@ public struct ConManager {
                               method: .patch,
                               auth: auth,
                               encoding: encoding!,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -184,7 +202,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -193,7 +211,7 @@ public struct ConManager {
                               method: .delete,
                               auth: auth,
                               encoding: encoding,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -203,7 +221,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -212,7 +230,7 @@ public struct ConManager {
                               method: .trace,
                               auth: auth,
                               encoding: encoding,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -222,7 +240,7 @@ public struct ConManager {
                            params: Params? = nil,
                            auth: Bool = false,
                            encoding: ParameterEncoding,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
@@ -231,7 +249,7 @@ public struct ConManager {
                               method: .connect,
                               auth: auth,
                               encoding: encoding,
-                              spinner: spinner,
+                              background: background,
                               success: success,
                               failed: failed,
                               completion: completion)
@@ -242,14 +260,12 @@ public struct ConManager {
                            method: HTTPMethod = .get,
                            auth: Bool = false,
                            encoding: ParameterEncoding,
-                           spinner: String? = nil,
+                           background: Bool = true,
                            success: SuccessHandler? = nil,
                            failed: ErrorHandler? = nil,
                            completion: CompletionHandler? = nil) {
-        var showSpinner = false
-        if let msg = spinner {
-            SwiftSpinner.show(msg)
-            showSpinner = true
+        if !background {
+            SVProgressHUD.show()
         }
         self.request(path, auth: auth, method: method, params: params, encoding: encoding, sendDevice: true)
         .validate(statusCode: 200..<300)
@@ -263,18 +279,16 @@ public struct ConManager {
                 }
                 switch response.result {
                 case .success:
-                    if showSpinner {
-                        SwiftSpinner.hide()
+                    if !background {
+                        SVProgressHUD.dismiss()
                     }
-                    success?(response.data)
+                    success?(response)
                 case .failure(let error):
                     let result = String(data: response.data!, encoding: .utf8)
                     print("Error(\(responseCode)): \(result)")
-                    let err = ConManager.getError(response.data!, _error: error, _code: responseCode)
-                    if showSpinner {
-                        SwiftSpinner.show(duration: 5.0, title: NSLocalizedString("Error", comment: "Spinner")).addTapHandler({
-                            SwiftSpinner.hide()
-                        }, subtitle: err.localized_description)
+                    let err = ConManager.getError(response, _error: error, _code: responseCode)
+                    if !background {
+                        SVProgressHUD.showError(withStatus: err.localized_description)
                     }
                     failed?(err)
                 }
@@ -285,9 +299,10 @@ public struct ConManager {
     public static func json(_ data: Data?) -> Params {
         if let _data = data {
             do {
-                let anyObj = try JSONSerialization.jsonObject(with: _data) as! [String: AnyObject]
-                if let json:Params = anyObj  {
-                    return json
+                if let anyObj = try JSONSerialization.jsonObject(with: _data) as? [String: Any] {
+                    if let json:Params = anyObj  {
+                        return json
+                    }
                 }
             } catch {
                 print("json error: \(error.localizedDescription)")
@@ -296,26 +311,42 @@ public struct ConManager {
         return [:]
     }
     
+    public static func jsonArray(_ data: Data?) -> Array<Params> {
+        if let _data = data {
+            do {
+                if let anyArray = try JSONSerialization.jsonObject(with: _data) as? Array<Params> {
+                    if let array:Array<Params> = anyArray  {
+                        return array
+                    }
+                }
+            } catch {
+                print("json error: \(error.localizedDescription)")
+            }
+        }
+        return Array()
+    }
+    
     // MARK: - private
     
-    private static func getError(_ data: Data?, _error: Error, _code: Int ) -> ConError {
-        var error:ConError = ConError(status: _code, error_id: "", error_description: "", localized_description: _error.localizedDescription, data: data)
-        let json = self.json(data)
+    private static func getError(_ response: DataResponse<Data>?, _error: Error, _code: Int ) -> ConError {
+        var error:ConError = ConError(status: _code, error_id: "", error_description: "", localized_description: _error.localizedDescription, response: response)
         
-        if let status: Int = json["status"] as? Int {
-            error.status = status
-        }
-        if let error_id: String = json["error_id"] as? String {
-            error.error_id = error_id
-        }
-        if let error_description: String = json["error_description"] as? String {
-            error.error_description = error_description
-            error.localized_description = error_description
-        }
-        if let localized_description: String = json["localized_description"] as? String {
-            error.localized_description = localized_description
-        } else if let message: String = json["message"] as? String {
-            error.localized_description = message
+        if let json = response?.result.value as? [String: Any] {
+            if let status: Int = json["status"] as? Int {
+                error.status = status
+            }
+            if let error_id: String = json["error_id"] as? String {
+                error.error_id = error_id
+            }
+            if let error_description: String = json["error_description"] as? String {
+                error.error_description = error_description
+                error.localized_description = error_description
+            }
+            if let localized_description: String = json["localized_description"] as? String {
+                error.localized_description = localized_description
+            } else if let message: String = json["message"] as? String {
+                error.localized_description = message
+            }
         }
         return error
     }

@@ -33,16 +33,3 @@ public extension UIAlertController {
         }
     }
 }
-
-public extension URL {
-    func getQueryItemValueForKey(key: String) -> String? {
-        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
-            return nil
-        }
-        
-        guard let queryItems = components.queryItems else { return nil }
-        return queryItems.filter {
-            $0.name == key
-            }.first?.value
-    }
-}

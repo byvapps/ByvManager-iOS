@@ -66,4 +66,15 @@ public struct Configuration {
     public static func getDic(_ key: String) -> Dictionary <String, Any>? {
         return Configuration.get(key) as? Dictionary <String, Any>
     }
+    
+    public static func panicUrl() -> String? {
+        if let dic = Configuration.getDic("panic") {
+            if Environment.current == .developmentEnvironment {
+                return dic["development"] as? String
+            } else {
+                return dic["production"] as? String
+            }
+        }
+        return nil
+    }
 }

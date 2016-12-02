@@ -12,7 +12,7 @@ public struct URLShortener {
     
     private static let url: String = "https://www.googleapis.com/urlshortener/v1/url"
     
-    public static func short(_ longUrl: String, spinner: String? = nil, completion: ((_ shortUrl: String) -> Void)? = nil ) {
+    public static func short(_ longUrl: String, background: Bool = true, completion: ((_ shortUrl: String) -> Void)? = nil ) {
         let key = Configuration.google("google_api_key")! // if not exist crash
         
         let params: Params = ["longUrl": longUrl]
@@ -20,10 +20,9 @@ public struct URLShortener {
         ConManager.POST("\(url)?key=\(key)",
                         params: params,
                         auth: false,
-                        spinner: spinner,
+                        background: background,
                         success: { (response) in
-                            let json = ConManager.json(response)
-                            if let id: String = json["id"] as? String {
+                            if let json = response?.result.value as? [String: Any], let id: String = json["id"] as? String {
                                 completion?(id)
                             }
                         },
@@ -32,7 +31,7 @@ public struct URLShortener {
                         })
     }
     
-    public static func long(_ shortUrl: String, spinner: String?, completion: ((_ shortUrl: String) -> Void)? = nil) {
+    public static func long(_ shortUrl: String, background: Bool = true, completion: ((_ shortUrl: String) -> Void)? = nil) {
         let key = Configuration.google("google_api_key")! // if not exist crash
         
         let params = ["shortUrl": shortUrl]
@@ -40,10 +39,9 @@ public struct URLShortener {
         ConManager.GET("\(url)?key=\(key)",
                         params: params,
                         auth: false,
-                        spinner: spinner,
+                        background: background,
                         success: { (response) in
-                            let json = ConManager.json(response)
-                            if let longUrl: String = json["longUrl"] as? String {
+                            if let json = response?.result.value as? [String: Any], let longUrl: String = json["longUrl"] as? String {
                                 completion?(longUrl)
                             }
             },
