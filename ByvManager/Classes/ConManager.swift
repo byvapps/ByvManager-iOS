@@ -284,46 +284,18 @@ public struct ConManager {
                     }
                     success?(response)
                 case .failure(let error):
-                    let result = String(data: response.data!, encoding: .utf8)
-                    print("Error(\(responseCode)): \(result)")
-                    let err = ConManager.getError(response, _error: error, _code: responseCode)
-                    if !background {
-                        SVProgressHUD.showError(withStatus: err.localized_description)
+                    if let data = response.data {
+                        let result = String(data: data, encoding: .utf8)
+                        print("Error(\(responseCode)): \(result)")
+                        let err = ConManager.getError(response, _error: error, _code: responseCode)
+                        if !background {
+                            SVProgressHUD.showError(withStatus: err.localized_description)
+                        }
+                        failed?(err)
                     }
-                    failed?(err)
                 }
                 completion?()
         }
-    }
-    
-    public static func json(_ data: Data?) -> Params {
-        if let _data = data {
-            do {
-                if let anyObj = try JSONSerialization.jsonObject(with: _data) as? [String: Any] {
-                    if let json:Params = anyObj  {
-                        return json
-                    }
-                }
-            } catch {
-                print("json error: \(error.localizedDescription)")
-            }
-        }
-        return [:]
-    }
-    
-    public static func jsonArray(_ data: Data?) -> Array<Params> {
-        if let _data = data {
-            do {
-                if let anyArray = try JSONSerialization.jsonObject(with: _data) as? Array<Params> {
-                    if let array:Array<Params> = anyArray  {
-                        return array
-                    }
-                }
-            } catch {
-                print("json error: \(error.localizedDescription)")
-            }
-        }
-        return Array()
     }
     
     // MARK: - private

@@ -8,6 +8,7 @@
 
 import Foundation
 import ByvUtils
+import SwiftyJSON
 
 public class Panic: NSObject, UIWebViewDelegate {
 
@@ -24,7 +25,7 @@ public class Panic: NSObject, UIWebViewDelegate {
     @objc private func check() {
         if let url = Environment.absoluteUrl(Configuration.panicUrl()) {
             ConManager.GET(url, success: { response in
-                let json = ConManager.json(response?.data)
+                let json = JSON(response?.data!)
                 if let disabled: Bool = json["disabled"] as? Bool, disabled == true {
                     //Disabled
                     if let _webUrl = Environment.absoluteUrl(json["disabledUrl"]) {

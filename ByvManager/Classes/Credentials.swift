@@ -7,29 +7,30 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public struct Credentials {
     var token_type: String = "bearer"
     var access_token: String
-    var expires: Date = Date(timeIntervalSinceNow: 9999999*9999999)
+    var expires: Date = Date(timeIntervalSinceNow: 99999999999999)
     var refresh_token: String
     var data: Data
     
     init(_ data: Data) {
         self.data = data
-        let json = ConManager.json(data)
-        if let token_type = json[Credentials.tokenTypeKey()] as! String? {
+        let json = JSON(data)
+        if let token_type = json[Credentials.tokenTypeKey()].string {
             self.token_type = token_type
         }
-        if let access_token = json[Credentials.accessTokenKey()] as! String? {
+        if let access_token = json[Credentials.accessTokenKey()].string {
             self.access_token = access_token
         } else {
             self.access_token = ""
         }
-        if let interval = json[Credentials.expiresKey()] as! Int? {
+        if let interval = json[Credentials.expiresKey()].int {
             self.expires = Date(timeIntervalSinceNow: TimeInterval(interval))
         }
-        if let refresh_token = json[Credentials.refreshTokenKey()] as! String? {
+        if let refresh_token = json[Credentials.refreshTokenKey()].string {
             self.refresh_token = refresh_token
         } else {
              self.refresh_token = ""

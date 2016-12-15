@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftSpinner
+import SVProgressHUD
 
 public enum SocialType {
     case facebook
@@ -156,10 +156,7 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     }
     
     public func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-//        print("didFailLoadWithError: \(error)")
-        SwiftSpinner.show(duration: 2.0, title: NSLocalizedString("Error", comment: "Spinner")).addTapHandler({
-            SwiftSpinner.hide()
-            })
+        SVProgressHUD.showError(withStatus: NSLocalizedString("Error", comment: "Spinner"))
     }
 
     func close(sender: UIBarButtonItem?) {

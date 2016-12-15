@@ -39,10 +39,10 @@ TODO: Add long description of the pod here.
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
 
-  s.dependency 'Alamofire', '~> 4.0'
-  s.dependency 'SwiftSpinner', '~> 1.0'
-  s.dependency 'SVProgressHUD'
   s.dependency 'ByvUtils'
+  s.dependency 'Alamofire', '~> 4.0'
+  s.dependency 'SwiftyJSON'
+  s.dependency 'SVProgressHUD'
   # s.dependency 'Socket.IO-Client-Swift', '~> 8.1.1' # Or latest version
 
 end

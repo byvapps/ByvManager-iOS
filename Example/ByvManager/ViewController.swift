@@ -9,6 +9,7 @@
 import UIKit
 import ByvManager
 import Firebase
+import SwiftyJSON
 
 class ViewController: UIViewController {
     
@@ -41,6 +42,8 @@ class ViewController: UIViewController {
                        auth: false,
                        background: false,
                        success: { (responseData) in
+                        let json = JSON(responseData?.data!)
+                        
                         var pages = 0
                         var total = 0
                         if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
@@ -54,8 +57,6 @@ class ViewController: UIViewController {
                         print("START")
                         print("Pages: \(pages)")
                         print("Count: \(total)")
-                        
-                        let json = ConManager.jsonArray(responseData?.data)
                         
                         debugPrint(json)
                         print("END")

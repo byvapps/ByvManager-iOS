@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 public struct Device {
     
@@ -39,15 +40,14 @@ public struct Device {
     // Init device. If stored get static data from Defaults, else get uid
     //
     public init() {
-        let data: Data? = UserDefaults.standard.data(forKey: "deviceJsonData")
-        let stored: Dictionary? = ConManager.json(data)
+        let stored = JSON(UserDefaults.standard.string(forKey: "deviceJsonData"))
         print("stored: \(stored)")
         
-        if let id = stored?["id"] as? Int {
+        if let id = stored["id"].int {
             Device.id = id
         }
         
-        if let uid = stored?["uid"] as? String {
+        if let uid = stored["uid"].string {
             self.uid = uid
         } else {
             if let uuid = UIDevice.current.identifierForVendor?.uuidString {
@@ -57,43 +57,39 @@ public struct Device {
             }
         }
         
-        if let active = stored?["active"] as? Int {
+        if let active = stored["active"].int{
             self.active = active == 1
         } else {
             self.active = true
         }
         
-        if let badge = stored?["badge"] as? Int {
+        if let badge = stored["badge"].int {
             self.badge = badge
         } else {
             self.badge = 0
         }
         
-        if let pushId = stored?["pushId"] as? String {
+        if let pushId = stored["pushId"].string {
             self.pushId = pushId
         }
         
         var formatter: DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
-        if let createdAt = stored?["createdAt"] as? String {
+        if let createdAt = stored["createdAt"].string {
             self.createdAt = formatter.date(from: createdAt)
         }
         
-        if let updatedAt = stored?["updatedAt"] as? String {
+        if let updatedAt = stored["updatedAt"].string {
             self.updatedAt = formatter.date(from: updatedAt)
         }
         
-        if let lastConnectionStart = stored?["lastConnectionStart"] as? String {
+        if let lastConnectionStart = stored["lastConnectionStart"].string {
             self.lastConnectionStart = formatter.date(from: lastConnectionStart)
         }
         
-        if let lastConnectionEnd = stored?["lastConnectionEnd"] as? String {
+        if let lastConnectionEnd = stored["lastConnectionEnd"] as? String {
             self.lastConnectionEnd = formatter.date(from: lastConnectionEnd)
-        }
-        
-        if let data: Data = UserDefaults.standard.data(forKey: "deviceJsonData"), let stored:Dictionary? = ConManager.json(data) {
-            print("stored: \(stored)")
         }
         
         name = UIDevice.current.name
@@ -133,7 +129,7 @@ public struct Device {
                               encoding: JSONEncoding.default,
                               success: { (responseData) in
                                 if let data: Data = responseData?.data {
-                                    self.store(data)
+                                    self.store(JSON(data))
                                 }
         })
     }
@@ -180,11 +176,11 @@ public struct Device {
         return response
     }
     
-    private func store(_ data: Data?) {
-        print("JSON: \(ConManager.json(data))")
-        if let id = ConManager.json(data)["id"] as? Int {
+    private func store(_ json: JSON?) {
+        print("JSON: \(json)")
+        if json?["id"].int != nil {
             let defs = UserDefaults.standard
-            defs.set(data, forKey: "deviceJsonData")
+            defs.set(json?.rawString(), forKey: "deviceJsonData")
             defs.synchronize()
         } else {
             print("Error storing device Json")

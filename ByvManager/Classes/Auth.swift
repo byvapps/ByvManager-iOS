@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SwiftSpinner
+import SVProgressHUD
 
 public struct Auth {
     
@@ -28,9 +28,8 @@ public struct Auth {
                                 success?(response)
                             } else {
                                 let error:ConError = ConError(status: 500, error_id: "", error_description: "", localized_description: "auth response format incorrect", response: response)
-                                SwiftSpinner.show(duration: 5.0, title: NSLocalizedString("Error", comment: "Spinner")).addTapHandler({
-                                    SwiftSpinner.hide()
-                                }, subtitle: error.localized_description)
+                                
+                                SVProgressHUD.showError(withStatus: error.localized_description)
                                 failed?(error)
                             }
                             
