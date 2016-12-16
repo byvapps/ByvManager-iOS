@@ -31,10 +31,6 @@ public class ByvManager {
         
     } //This prevents others from using the default '()' initializer for this class.
     
-    
-    @objc public func hudTapped(_ notification: Notification) {
-        SVProgressHUD.dismiss()
-    }
     // MARK: - Environment
     
     //
@@ -68,8 +64,8 @@ public class ByvManager {
         Device.setDeviceActive(true)
         //ByvManager.sockets.connect()
         
-        NotificationCenter.default.addObserver(ByvManager.sharedInstance, selector: #selector(ByvManager.hudTapped(_:)), name:  Notification.Name("SVProgressHUDDidReceiveTouchEventNotification"), object: nil)
         SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.black)
+        SVProgressHUD.setMinimumDismissTimeInterval(3.0)
         
         Panic.check()
     }

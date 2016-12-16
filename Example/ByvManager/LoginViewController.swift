@@ -17,7 +17,6 @@ class LoginViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        SVProgressHUD.showError(withStatus: "PROBANDO!!!!!")
         // Do any additional setup after loading the view.
     }
 
