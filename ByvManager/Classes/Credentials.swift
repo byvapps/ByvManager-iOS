@@ -18,7 +18,7 @@ public struct Credentials {
     
     init(_ data: Data) {
         self.data = data
-        let json = JSON(data)
+        let json = JSON(data: data)
         if let token_type = json[Credentials.tokenTypeKey()].string {
             self.token_type = token_type
         }

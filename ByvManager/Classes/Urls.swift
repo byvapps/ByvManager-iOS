@@ -62,7 +62,7 @@ public func url_request_reset_password_callback() -> String {
 
 public func url_token_social() -> String {
     if let path = Configuration.override("SOCIAL_TOKEN_URL") as? String {
-        return path as! String
+        return path
     } else {
         return "auth/token/social"
     }

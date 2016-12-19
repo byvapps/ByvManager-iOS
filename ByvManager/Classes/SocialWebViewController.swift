@@ -86,7 +86,7 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
         view.addConstraints(verticalConstraints)
         
         if self.navigationController?.viewControllers[0] == self {
-            var bi = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action:  #selector(self.close(sender:)))
+            let bi = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action:  #selector(self.close(sender:)))
             self.navigationItem.rightBarButtonItem = bi
         }
     }
@@ -164,7 +164,7 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
         if self.navigationController?.viewControllers[0] == self {
             self.dismiss(animated: true, completion: nil)
         } else {
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
         }
     }
 }

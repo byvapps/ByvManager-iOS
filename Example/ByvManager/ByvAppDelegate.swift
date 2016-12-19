@@ -174,7 +174,7 @@ open class ByvAppDelegate: UIResponder, UIApplicationDelegate {
     
     func parseDynamicLink(_ url: URL) -> String {
         if let host = Configuration.firebase("dynamic_link_url") as? String, url.absoluteString.hasPrefix(host) {
-            if let link = url.getQueryItemValueForKey(key: "link") {
+            if let link = url.getQueryItemValueForKey("link") {
                 return link
             }
         }

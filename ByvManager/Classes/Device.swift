@@ -12,7 +12,7 @@ import SwiftyJSON
 
 public struct Device {
     
-    static var id: Int?
+    var deviceId: Int?
     var uid: String
     var name: String?
     var os: String
@@ -40,11 +40,15 @@ public struct Device {
     // Init device. If stored get static data from Defaults, else get uid
     //
     public init() {
-        let stored = JSON(UserDefaults.standard.string(forKey: "deviceJsonData"))
+        var jsonStr:String = ""
+        if let str = UserDefaults.standard.string(forKey: "deviceJsonData") {
+            jsonStr = str
+        }
+        let stored = JSON.parse(jsonStr)
         print("stored: \(stored)")
         
         if let id = stored["id"].int {
-            Device.id = id
+            self.deviceId = id
         }
         
         if let uid = stored["uid"].string {
@@ -73,7 +77,7 @@ public struct Device {
             self.pushId = pushId
         }
         
-        var formatter: DateFormatter = DateFormatter()
+        let formatter: DateFormatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         if let createdAt = stored["createdAt"].string {
@@ -88,7 +92,7 @@ public struct Device {
             self.lastConnectionStart = formatter.date(from: lastConnectionStart)
         }
         
-        if let lastConnectionEnd = stored["lastConnectionEnd"] as? String {
+        if let lastConnectionEnd = stored["lastConnectionEnd"].string {
             self.lastConnectionEnd = formatter.date(from: lastConnectionEnd)
         }
         
@@ -115,7 +119,7 @@ public struct Device {
         let params: Params = self.parameters()
         var path: String
         var method: HTTPMethod
-        if let deviceId = Device.id {
+        if let deviceId = self.deviceId {
             method = .put
             path = "\(url_devices())/\(deviceId)"
         } else {
@@ -129,7 +133,8 @@ public struct Device {
                               encoding: JSONEncoding.default,
                               success: { (responseData) in
                                 if let data: Data = responseData?.data {
-                                    self.store(JSON(data))
+                                    let json = JSON(data: data)
+                                    self.store(json)
                                 }
         })
     }

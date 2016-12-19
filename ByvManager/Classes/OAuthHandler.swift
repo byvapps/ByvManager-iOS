@@ -106,7 +106,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
             
             print(parameters)
             var headers: HTTPHeaders? = nil
-            if let dId = Device.id {
+            if let dId = Device().deviceId {
                 headers = ["DeviceId": "\(dId)"]
             }
             sessionManager.request(urlString, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
@@ -120,6 +120,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                             completion(false, nil, nil)
                         }
                     case .failure(let error):
+                        print(error)
                         if response.response?.statusCode == 401 {
                             //Refresh token invalid
                             Credentials.removeCredentials()

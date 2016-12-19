@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 import SVProgressHUD
 
 public typealias Params = [String: Any]
@@ -38,7 +39,7 @@ public struct ConManager {
         sendDevice: Bool = true)
         -> DataRequest
     {
-        var manager = SessionManager.default;
+        let manager = SessionManager.default;
         manager.adapter = nil
         manager.retrier = nil
         if auth {
@@ -48,7 +49,7 @@ public struct ConManager {
         }
         
         var headers: HTTPHeaders? = nil
-        if sendDevice, let dId = Device.id {
+        if sendDevice, let dId = Device().deviceId {
             headers = ["DeviceId": "\(dId)"]
         }
         
@@ -303,20 +304,21 @@ public struct ConManager {
     private static func getError(_ response: DataResponse<Data>?, _error: Error, _code: Int ) -> ConError {
         var error:ConError = ConError(status: _code, error_id: "", error_description: "", localized_description: _error.localizedDescription, response: response)
         
-        if let json = response?.result.value as? [String: Any] {
-            if let status: Int = json["status"] as? Int {
+        if let data:Data = response?.data {
+            let json = JSON(data: data)
+            if let status: Int = json["status"].int {
                 error.status = status
             }
-            if let error_id: String = json["error_id"] as? String {
+            if let error_id: String = json["error_id"].string {
                 error.error_id = error_id
             }
-            if let error_description: String = json["error_description"] as? String {
+            if let error_description: String = json["error_description"].string {
                 error.error_description = error_description
                 error.localized_description = error_description
             }
-            if let localized_description: String = json["localized_description"] as? String {
+            if let localized_description: String = json["localized_description"].string {
                 error.localized_description = localized_description
-            } else if let message: String = json["message"] as? String {
+            } else if let message: String = json["message"].string {
                 error.localized_description = message
             }
         }

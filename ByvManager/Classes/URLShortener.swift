@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public struct URLShortener {
     
@@ -22,9 +23,13 @@ public struct URLShortener {
                         auth: false,
                         background: background,
                         success: { (response) in
-                            if let json = response?.result.value as? [String: Any], let id: String = json["id"] as? String {
-                                completion?(id)
+                            if let data: Data = response?.data {
+                                let json = JSON(data: data)
+                                if let id: String = json["id"].string {
+                                    completion?(id)
+                                }
                             }
+                            
                         },
                         failed: { (failed) in
                             completion?(longUrl)
@@ -41,9 +46,13 @@ public struct URLShortener {
                         auth: false,
                         background: background,
                         success: { (response) in
-                            if let json = response?.result.value as? [String: Any], let longUrl: String = json["longUrl"] as? String {
-                                completion?(longUrl)
+                            if let data: Data = response?.data {
+                                let json = JSON(data: data)
+                                if let longUrl: String = json["longUrl"].string {
+                                    completion?(longUrl)
+                                }
                             }
+                            
             },
                         failed: { (failed) in
                             completion?(shortUrl)

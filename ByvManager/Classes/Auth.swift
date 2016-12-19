@@ -8,6 +8,7 @@
 
 import Foundation
 import SVProgressHUD
+import ByvUtils
 
 public struct Auth {
     
@@ -23,8 +24,7 @@ public struct Auth {
                         params: params,
                         background: background,
                         success: { (response) in
-                            debugPrint(response)
-                            if let cred = Credentials.store(response?.data) {
+                            if Credentials.store(response?.data) != nil {
                                 success?(response)
                             } else {
                                 let error:ConError = ConError(status: 500, error_id: "", error_description: "", localized_description: "auth response format incorrect", response: response)
@@ -80,7 +80,6 @@ public struct Auth {
                         auth: true,
                         background: background,
                         success: { (response) in
-                            debugPrint(response?.result.value)
                             Credentials.removeCredentials()
                             success?(response)
         }, failed: failed, completion: completion)
@@ -161,7 +160,7 @@ public struct Auth {
     public static func appOpenned(_ url: URL) -> Bool {
         if url.path.contains(url_request_magic_callback()) {
             // Magic link
-            if let code = url.getQueryItemValueForKey(key: "code") {
+            if let code = url.getQueryItemValueForKey("code") {
                 Auth.magicLogin(code: code, background: false, success: { (response) in
                     print("MAGIC WORKING")
                 })
@@ -171,7 +170,7 @@ public struct Auth {
         
         if url.path.contains(url_request_reset_password_callback()) {
             // Reset password
-            if let code = url.getQueryItemValueForKey(key: "code") {
+            if let code = url.getQueryItemValueForKey("code") {
                 // Create the alert controller
                 let alertController = UIAlertController(title: NSLocalizedString("Nuevo Password", comment: "reset password title"), message: NSLocalizedString("Introduce tu nuevo password", comment: "reset password messgae"), preferredStyle: .alert)
                 

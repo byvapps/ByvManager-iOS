@@ -42,24 +42,25 @@ class ViewController: UIViewController {
                        auth: false,
                        background: false,
                        success: { (responseData) in
-                        let json = JSON(responseData?.data!)
-                        
-                        var pages = 0
-                        var total = 0
-                        if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
-                            let pagesInt: Int = Int(pagesStr),
-                            let totalStr: String = responseData?.response?.allHeaderFields["X-Total-Count"] as? String,
-                            let totalInt: Int = Int(totalStr){
-                            pages = pagesInt
-                            total = totalInt
+                        if let data:Data = responseData?.data {
+                            let json = JSON(data: data)
+                            var pages = 0
+                            var total = 0
+                            if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
+                                let pagesInt: Int = Int(pagesStr),
+                                let totalStr: String = responseData?.response?.allHeaderFields["X-Total-Count"] as? String,
+                                let totalInt: Int = Int(totalStr){
+                                pages = pagesInt
+                                total = totalInt
+                            }
+                            
+                            print("START")
+                            print("Pages: \(pages)")
+                            print("Count: \(total)")
+                            
+                            debugPrint(json)
+                            print("END")
                         }
-                        
-                        print("START")
-                        print("Pages: \(pages)")
-                        print("Count: \(total)")
-                        
-                        debugPrint(json)
-                        print("END")
         });
     }
     
