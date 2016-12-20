@@ -25,7 +25,7 @@ An utility module for internal use in B&V Apps
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Adrian' => 'adrian@byvapps.com' }
-  s.source           = { :git => 'https://github.com/byvapps/ByvManager', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/byvapps/ByvManager.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/byvapps'
 
   s.ios.deployment_target = '9.0'
