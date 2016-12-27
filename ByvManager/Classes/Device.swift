@@ -12,6 +12,8 @@ import SwiftyJSON
 
 public struct Device {
     
+    public static var autoResetBadge = true
+    
     var deviceId: Int?
     var uid: String
     var name: String?
@@ -45,7 +47,6 @@ public struct Device {
             jsonStr = str
         }
         let stored = JSON.parse(jsonStr)
-        print("stored: \(stored)")
         
         if let id = stored["id"].int {
             self.deviceId = id
@@ -116,7 +117,11 @@ public struct Device {
     // create or update in server
     //
     private func storeInServer() {
-        let params: Params = self.parameters()
+        var params: Params = self.parameters()
+        if Device.autoResetBadge {
+            params["badge"] = NSNumber(integerLiteral: 0)
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
         var path: String
         var method: HTTPMethod
         if let deviceId = self.deviceId {
@@ -182,7 +187,6 @@ public struct Device {
     }
     
     private func store(_ json: JSON?) {
-        print("JSON: \(json)")
         if json?["id"].int != nil {
             let defs = UserDefaults.standard
             defs.set(json?.rawString(), forKey: "deviceJsonData")

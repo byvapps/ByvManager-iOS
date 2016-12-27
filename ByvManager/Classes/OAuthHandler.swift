@@ -63,7 +63,9 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
         lock.lock() ; defer { lock.unlock() }
         
         if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 {
-            print("CADUCADO!!!!!")
+            if ByvManager.debugMode {
+                print("CADUCADO!!!!!")
+            }
             requestsToRetry.append(completion)
             
             if !isRefreshing {
@@ -89,7 +91,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
     // MARK: - Private - Refresh Tokens
     
     private func refreshTokens(completion: @escaping RefreshCompletion) {
-        guard !isRefreshing else { print("intento de refresh"); return }
+        guard !isRefreshing else { if ByvManager.debugMode {print("intento de refresh")}; return }
         
         if let rt: String = refreshToken {
             
@@ -104,7 +106,9 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                 "grant_type": "refresh_token"
             ]
             
-            print(parameters)
+            if ByvManager.debugMode {
+                print(parameters)
+            }
             var headers: HTTPHeaders? = nil
             if let dId = Device().deviceId {
                 headers = ["DeviceId": "\(dId)"]

@@ -12,7 +12,7 @@
 		<key>enabled</key>
 		<true/>
 		<key>dynamic_link_url</key>
-		<string>https://rb3h2.app.goo.gl/</string>
+		<string>https://rb3h2.app.goo.gl</string>
 		<key>dynamic_link_custom_url</key>
 		<string>byvplayground</string>
 	</dict>

@@ -271,9 +271,11 @@ public struct ConManager {
         self.request(path, auth: auth, method: method, params: params, encoding: encoding, sendDevice: true)
         .validate(statusCode: 200..<300)
             .responseData { response in
-                print("REQUEST:\nParams:")
-                dump(params)
-                debugPrint(response)
+                if ByvManager.debugMode {   
+                    print("REQUEST:\nParams:")
+                    dump(params)
+                    debugPrint(response)
+                }
                 var responseCode: Int = 500
                 if let code = response.response?.statusCode {
                     responseCode = code

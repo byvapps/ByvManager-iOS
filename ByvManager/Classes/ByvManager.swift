@@ -9,11 +9,19 @@
 import Foundation
 import SVProgressHUD
 
+// MARK: - Global Notifications
+
+public struct ByvNotifications {
+    static let login = Notification.Name("ByvNotificationLogin")
+    static let logout = Notification.Name("ByvNotificationLogout")
+}
+
 // MARK: - ByvManager
 
 public class ByvManager {
     
     //public static let sockets = Sockets()
+    public static var debugMode = false
     
     // MARK: - Singleton
     
@@ -39,7 +47,9 @@ public class ByvManager {
     public class func setEnvironment(_ env: Environment) {
         if Environment.current != env {
             Environment.current = env
-            print("New baseUrl: \(Environment.baseUrl())")
+            if ByvManager.debugMode {
+                print("New baseUrl: \(Environment.baseUrl())")
+            }
         }
     }
     
