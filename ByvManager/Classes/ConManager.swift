@@ -19,6 +19,9 @@ public typealias CompletionHandler = () -> Void
 
 public struct ConManager {
     
+    static private var authManager:SessionManager? = nil
+    static private let defaultManager = SessionManager.default
+    
     /// Creates a `DataRequest` using the default `SessionManager` to retrieve the contents of the specified `url`,
     /// `method`, `parameters`, `encoding` and `headers`.
     ///
@@ -39,13 +42,15 @@ public struct ConManager {
         sendDevice: Bool = true)
         -> DataRequest
     {
-        let manager = SessionManager.default;
-        manager.adapter = nil
-        manager.retrier = nil
+        var manager = defaultManager
         if auth {
-            let oAuthHandler = OAuthHandler()
-            manager.adapter = oAuthHandler
-            manager.retrier = oAuthHandler
+            if authManager == nil {
+                let oAuthHandler = OAuthHandler()
+                authManager = SessionManager()
+                authManager!.adapter = oAuthHandler
+                authManager!.retrier = oAuthHandler
+            }
+            manager = authManager!
         }
         
         var headers: HTTPHeaders? = nil
@@ -69,13 +74,13 @@ public struct ConManager {
     // MARK: - public methods
     
     public static func OPTIONS(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                               params: Params? = nil,
+                               auth: Bool = false,
+                               encoding: ParameterEncoding,
+                               background: Bool = true,
+                               success: SuccessHandler? = nil,
+                               failed: ErrorHandler? = nil,
+                               completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .options,
@@ -106,12 +111,12 @@ public struct ConManager {
     }
     
     public static func LIST(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                            params: Params? = nil,
+                            auth: Bool = false,
+                            background: Bool = true,
+                            success: SuccessHandler? = nil,
+                            failed: ErrorHandler? = nil,
+                            completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .get,
@@ -124,13 +129,13 @@ public struct ConManager {
     }
     
     public static func HEAD(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                            params: Params? = nil,
+                            auth: Bool = false,
+                            encoding: ParameterEncoding,
+                            background: Bool = true,
+                            success: SuccessHandler? = nil,
+                            failed: ErrorHandler? = nil,
+                            completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .head,
@@ -143,13 +148,13 @@ public struct ConManager {
     }
     
     public static func POST(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding? = JSONEncoding.default,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                            params: Params? = nil,
+                            auth: Bool = false,
+                            encoding: ParameterEncoding? = JSONEncoding.default,
+                            background: Bool = true,
+                            success: SuccessHandler? = nil,
+                            failed: ErrorHandler? = nil,
+                            completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .post,
@@ -181,13 +186,13 @@ public struct ConManager {
     }
     
     public static func PATCH(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding? = JSONEncoding.default,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                             params: Params? = nil,
+                             auth: Bool = false,
+                             encoding: ParameterEncoding? = JSONEncoding.default,
+                             background: Bool = true,
+                             success: SuccessHandler? = nil,
+                             failed: ErrorHandler? = nil,
+                             completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .patch,
@@ -200,13 +205,13 @@ public struct ConManager {
     }
     
     public static func DELETE(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                              params: Params? = nil,
+                              auth: Bool = false,
+                              encoding: ParameterEncoding,
+                              background: Bool = true,
+                              success: SuccessHandler? = nil,
+                              failed: ErrorHandler? = nil,
+                              completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .delete,
@@ -219,13 +224,13 @@ public struct ConManager {
     }
     
     public static func TRACE(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                             params: Params? = nil,
+                             auth: Bool = false,
+                             encoding: ParameterEncoding,
+                             background: Bool = true,
+                             success: SuccessHandler? = nil,
+                             failed: ErrorHandler? = nil,
+                             completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .trace,
@@ -238,13 +243,13 @@ public struct ConManager {
     }
     
     public static func CONNECT(_ path: URLConvertible,
-                           params: Params? = nil,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                               params: Params? = nil,
+                               auth: Bool = false,
+                               encoding: ParameterEncoding,
+                               background: Bool = true,
+                               success: SuccessHandler? = nil,
+                               failed: ErrorHandler? = nil,
+                               completion: CompletionHandler? = nil) {
         ConManager.connection(path,
                               params: params,
                               method: .connect,
@@ -257,21 +262,21 @@ public struct ConManager {
     }
     
     public static func connection(_ path: URLConvertible,
-                           params: Params? = nil,
-                           method: HTTPMethod = .get,
-                           auth: Bool = false,
-                           encoding: ParameterEncoding,
-                           background: Bool = true,
-                           success: SuccessHandler? = nil,
-                           failed: ErrorHandler? = nil,
-                           completion: CompletionHandler? = nil) {
+                                  params: Params? = nil,
+                                  method: HTTPMethod = .get,
+                                  auth: Bool = false,
+                                  encoding: ParameterEncoding,
+                                  background: Bool = true,
+                                  success: SuccessHandler? = nil,
+                                  failed: ErrorHandler? = nil,
+                                  completion: CompletionHandler? = nil) {
         if !background {
             SVProgressHUD.show()
         }
         self.request(path, auth: auth, method: method, params: params, encoding: encoding, sendDevice: true)
-        .validate(statusCode: 200..<300)
+            .validate(statusCode: 200..<300)
             .responseData { response in
-                if ByvManager.debugMode {   
+                if ByvManager.debugMode {
                     print("REQUEST:\nParams:")
                     dump(params)
                     debugPrint(response)

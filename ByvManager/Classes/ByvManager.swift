@@ -12,8 +12,8 @@ import SVProgressHUD
 // MARK: - Global Notifications
 
 public struct ByvNotifications {
-    static let login = Notification.Name("ByvNotificationLogin")
-    static let logout = Notification.Name("ByvNotificationLogout")
+    public static let login = Notification.Name("ByvNotificationLogin")
+    public static let logout = Notification.Name("ByvNotificationLogout")
 }
 
 // MARK: - ByvManager

@@ -67,10 +67,18 @@ public struct Credentials {
     
     public static func current() -> Credentials? {
         let defs = UserDefaults.standard
-        if let data = defs.object(forKey: "credentials") as! Data? {
+        if let data = defs.object(forKey: "credentials") as? Data {
             return Credentials(data)
         }
         return nil
+    }
+    
+    public static func isLoggedIn() -> Bool {
+        let defs = UserDefaults.standard
+        if defs.object(forKey: "credentials") as? Data != nil {
+            return true
+        }
+        return false
     }
     
     public static func token() -> String? {

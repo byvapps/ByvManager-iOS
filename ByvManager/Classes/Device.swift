@@ -46,7 +46,7 @@ public struct Device {
         if let str = UserDefaults.standard.string(forKey: "deviceJsonData") {
             jsonStr = str
         }
-        let stored = JSON.parse(jsonStr)
+        let stored = JSON(parseJSON: jsonStr)
         
         if let id = stored["id"].int {
             self.deviceId = id

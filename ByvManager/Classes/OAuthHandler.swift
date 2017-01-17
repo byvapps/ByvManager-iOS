@@ -50,9 +50,6 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
             urlRequest.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
             return urlRequest
         }
-        if let url = urlRequest.url, url.absoluteString.hasPrefix(baseURLString) {
-            
-        }
         
         return urlRequest
     }
@@ -125,13 +122,19 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                         }
                     case .failure(let error):
                         print(error)
+                        if ByvManager.debugMode {
+                            print("REQUEST REFERSH:\nParams:")
+                            dump(parameters)
+                            debugPrint(response)
+                            print("Data: \(String(data: response.data!, encoding: .utf8))")
+                        }
                         if response.response?.statusCode == 401 {
                             //Refresh token invalid
                             Credentials.removeCredentials()
                             completion(false, nil, nil)
                         }
                     }
-                }
+            }
         } else {
             Credentials.removeCredentials()
             completion(false, nil, nil)

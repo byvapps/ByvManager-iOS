@@ -123,3 +123,11 @@ public func url_profile() -> String {
         return "api/profile"
     }
 }
+
+public func url_upload() -> String {
+    if let path = Configuration.override("UPLOAD_URL") as? String {
+        return path
+    } else {
+        return "upload"
+    }
+}
