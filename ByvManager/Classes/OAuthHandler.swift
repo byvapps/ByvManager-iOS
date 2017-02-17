@@ -36,6 +36,15 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
         self.clientID = Configuration.auth("byv_client_id") as! String
         self.clientSecret = Configuration.auth("byv_client_secret") as! String
         self.baseURLString = Environment.baseUrl()
+        self.reloadCredentials()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.reloadCredentials),
+                                               name: ByvNotifications.login,
+                                               object: nil)
+    }
+    
+    @objc private func reloadCredentials() {
         if let cred = Credentials.current() {
             self.accessToken = cred.access_token
             self.refreshToken = cred.refresh_token

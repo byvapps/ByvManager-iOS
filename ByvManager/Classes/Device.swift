@@ -35,6 +35,7 @@ public struct Device {
     var countyCode: String?
     var regionCode: String?
     var currencyCode: String?
+    var timezone: String?
     
     // MARK: - init
     
@@ -109,6 +110,7 @@ public struct Device {
         countyCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
         regionCode = Locale.current.regionCode
         currencyCode = Locale.current.currencyCode
+        timezone = TimeZone.current.identifier
     }
     
     // MARK: - private
@@ -182,6 +184,9 @@ public struct Device {
         }
         if let currencyCode = self.currencyCode {
             response["currencyCode"] = currencyCode
+        }
+        if let timezone = self.timezone {
+            response["timezone"] = timezone
         }
         return response
     }

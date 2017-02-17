@@ -73,6 +73,21 @@ public struct ConManager {
     
     // MARK: - public methods
     
+    public static func paginatedInfo(_ responseData:DataResponse<Data>?) -> (pages: Int?, count: Int?) {
+        var pages: Int? = nil
+        var count: Int? = nil
+        if responseData?.data != nil {
+            if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
+                let pagesInt: Int = Int(pagesStr),
+                let countStr: String = responseData?.response?.allHeaderFields["X-Total-Count"] as? String,
+                let countInt: Int = Int(countStr){
+                pages = pagesInt
+                count = countInt
+            }
+        }
+        return (pages, count)
+    }
+    
     public static func OPTIONS(_ path: URLConvertible,
                                params: Params? = nil,
                                auth: Bool = false,

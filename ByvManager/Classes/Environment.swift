@@ -49,4 +49,13 @@ public enum Environment {
         }
         return nil
     }
+    
+    public static func getAbsoluteURL(_ url: String?) -> URL? {
+        if let urlStr = Environment.absoluteUrl(url) {
+            if let absoluteUrl : URL = URL(string: urlStr) {
+                return absoluteUrl
+            }
+        }
+        return nil
+    }
 }

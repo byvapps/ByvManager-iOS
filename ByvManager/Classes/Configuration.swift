@@ -77,4 +77,18 @@ public struct Configuration {
         }
         return nil
     }
+    
+    public static func pushModel(_ key: String) -> String? {
+        if let push = Configuration.getDic("pushNotifications"), let models = push["models"] as? Dictionary <String, String> {
+            return models[key]
+        }
+        return nil
+    }
+    
+    public static func pushAction(_ key: String) -> Dictionary <String, String>? {
+        if let push = Configuration.getDic("pushNotifications"), let models = push["actions"] as? Dictionary <String, Dictionary <String, String>> {
+            return models[key]
+        }
+        return nil
+    }
 }

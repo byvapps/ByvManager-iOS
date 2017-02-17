@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ByvManager'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'An utility module'
 
 # This description is used to generate tags and improve search results.
@@ -40,9 +40,11 @@ An utility module for internal use in B&V Apps
   # s.frameworks = 'UIKit', 'MapKit'
 
   s.dependency 'ByvUtils'
+  s.dependency 'ByvModalNav'
   s.dependency 'Alamofire', '~> 4.0'
   s.dependency 'SwiftyJSON'
   s.dependency 'SVProgressHUD'
+  s.dependency 'BRYXBanner'
   # s.dependency 'Socket.IO-Client-Swift', '~> 8.1.1' # Or latest version
 
 end
