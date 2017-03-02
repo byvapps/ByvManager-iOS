@@ -32,7 +32,7 @@ public class ByvPaginatedSection {
     var isFullLoaded:Bool = false
 }
 
-class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -45,7 +45,7 @@ class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITable
     var sections:Array<ByvPaginatedSection> = []
     var allowPullToRefresh: Bool = true
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         self.tableView.delegate = self
@@ -100,18 +100,18 @@ class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITable
         // else self.refreshTable(true)
     }
 
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     // Override if custom cell for custom index is needed
-    func cellIdentifierFor(indexPath: IndexPath, item: Any) -> String {
+    open func cellIdentifierFor(indexPath: IndexPath, item: Any) -> String {
         return sections[indexPath.section].cellIdentifier
     }
     
     // Override to customize cell
-    func updateCell(cell: UITableViewCell, with item: Any) {
+    open func updateCell(cell: UITableViewCell, with item: Any) {
         if let ip = self.tableView.indexPath(for: cell) {
             cell.textLabel?.text = "section: \(ip.section) - row: \(ip.row)"
         }
@@ -119,18 +119,18 @@ class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     // Override to filter elemnts if need
-    func filterItems(_ newItems: [JSON], in sectionIndex:Int) -> Array<Any> {
+    open func filterItems(_ newItems: [JSON], in sectionIndex:Int) -> Array<Any> {
         return newItems
     }
     
     // Override to make select action
-    func didSelect(item: Any, at indexPath:IndexPath) {
+    open func didSelect(item: Any, at indexPath:IndexPath) {
         print("item selected at index: \(indexPath.section)-\(indexPath.row)")
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // tableview delegate & data source
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("section: \(indexPath.section) - row: \(indexPath.row)")
         let section = sections[indexPath.section]
         if indexPath.row >= section.items.count {
@@ -287,7 +287,7 @@ class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITable
         return nil
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int {
         var response:Int = 0
         
         for section in sections {
@@ -300,7 +300,7 @@ class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITable
         return response
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection sectionIndex: Int) -> Int {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection sectionIndex: Int) -> Int {
         let section = sections[sectionIndex]
         let selectedSection = toLoadSection()
         if selectedSection === section && !section.isFullLoaded && (!section.automaticallyLoadNextPage || section.showLoadingCell) {
@@ -310,7 +310,7 @@ class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITable
         return section.items.count
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section < sections.count {
             let section = sections[indexPath.section]
             if indexPath.row >= section.items.count {
