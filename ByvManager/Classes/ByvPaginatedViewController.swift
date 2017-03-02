@@ -10,26 +10,26 @@ import UIKit
 import SwiftyJSON
 
 public class ByvPaginatedSection {
-    var url:String = ""
-    var limit: Int = 10
-    var offset: Int = 0
-    var params:Dictionary<String, Any> = ["offset" :  NSNumber(value:0), "limit" : NSNumber(value:10)]
-    var cellIdentifier:String = "cell"
-    var showLoadingCell:Bool = true
-    var automaticallyLoadNextPage:Bool = false
-    var loadingCellNib: UINib? = nil
-    var loadMoreCellNib: UINib? = nil
+    public var url:String = ""
+    public var limit: Int = 10
+    public var offset: Int = 0
+    public var params:Dictionary<String, Any> = ["offset" :  NSNumber(value:0), "limit" : NSNumber(value:10)]
+    public var cellIdentifier:String = "cell"
+    public var showLoadingCell:Bool = true
+    public var automaticallyLoadNextPage:Bool = false
+    public var loadingCellNib: UINib? = nil
+    public var loadMoreCellNib: UINib? = nil
     
-    var insertRowAnimation: UITableViewRowAnimation = .none
-    var deleteRowAnimation: UITableViewRowAnimation = .fade
+    public var insertRowAnimation: UITableViewRowAnimation = .none
+    public var deleteRowAnimation: UITableViewRowAnimation = .fade
     
-    var items:Array<Any> = []
+    public var items:Array<Any> = []
     
-    var isLoadingData:Bool = false
-    var startPage:Int = 0
-    var page:Int = 0
-    var pages:Int = 1
-    var isFullLoaded:Bool = false
+    public var isLoadingData:Bool = false
+    public var startPage:Int = 0
+    public var page:Int = 0
+    public var pages:Int = 1
+    public var isFullLoaded:Bool = false
     
     public init() {
         
