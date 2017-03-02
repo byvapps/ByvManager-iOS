@@ -30,6 +30,10 @@ public class ByvPaginatedSection {
     var page:Int = 0
     var pages:Int = 1
     var isFullLoaded:Bool = false
+    
+    public init() {
+        
+    }
 }
 
 open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -38,12 +42,12 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
     
     let refreshControl: UIRefreshControl = UIRefreshControl()
     
-    var loadinCellId:String = "ByvPaginatedLoadingCellId"
-    var loadMoreCellId:String = "ByvPaginatedLoadMoreCellId"
+    public var loadinCellId:String = "ByvPaginatedLoadingCellId"
+    public var loadMoreCellId:String = "ByvPaginatedLoadMoreCellId"
     
     var isRefreshingInBackground:Bool = false
-    var sections:Array<ByvPaginatedSection> = []
-    var allowPullToRefresh: Bool = true
+    public var sections:Array<ByvPaginatedSection> = []
+    public var allowPullToRefresh: Bool = true
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -163,7 +167,7 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         }
     }
     
-    func refreshTable(_ animated: Bool = false) {
+    public func refreshTable(_ animated: Bool = false) {
         resetSections()
         self.tableView.reloadData()
         if animated == true {
@@ -179,7 +183,7 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         
     }
     
-    func reloadData() {
+    public func reloadData() {
         resetSections()
         
         isRefreshingInBackground = true
@@ -198,7 +202,7 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         }
     }
     
-    func loadPage() {
+    public func loadPage() {
         if let section = toLoadSection() {
             if !section.isLoadingData {
                 section.isLoadingData = true
@@ -278,7 +282,7 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         return -1
     }
     
-    func toLoadSection() -> ByvPaginatedSection? {
+    public func toLoadSection() -> ByvPaginatedSection? {
         for section in sections {
             if !section.isFullLoaded {
                 return section
