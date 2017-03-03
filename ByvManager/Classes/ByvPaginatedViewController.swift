@@ -37,8 +37,8 @@ public class ByvPaginatedSection {
 }
 
 open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak public var tableView: UITableView!
     
     let refreshControl: UIRefreshControl = UIRefreshControl()
     
@@ -51,7 +51,7 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 44.00
@@ -103,7 +103,7 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         // Tint color bug fixx END
         // else self.refreshTable(true)
     }
-
+    
     override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -144,6 +144,14 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
                 if let aiv = cell.viewWithTag(310584) as? UIActivityIndicatorView {
                     aiv.startAnimating()
                 }
+                
+                if self.toLoadSection() === section && section.automaticallyLoadNextPage && !section.isLoadingData {
+                    if indexPath.row == section.items.count {
+                        //                    self.perform(#selector(self.loadPage(_:)), with: nil, afterDelay: 0.1)
+                        self.loadPage()
+                    }
+                }
+                
                 return cell
             } else {
                 let identifier = "loadMoreCell_\(indexPath.section)"
@@ -155,13 +163,6 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
             let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifierFor(indexPath: indexPath, item: item), for:indexPath)
             
             updateCell(cell: cell, with: item)
-            
-            if self.toLoadSection() === section && section.automaticallyLoadNextPage && !section.isLoadingData {
-                if indexPath.row == section.items.count - 1 {
-//                    self.perform(#selector(self.loadPage(_:)), with: nil, afterDelay: 0.1)
-                    self.loadPage()
-                }
-            }
             
             return cell
         }
@@ -332,5 +333,5 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
             }
         }
     }
-
+    
 }

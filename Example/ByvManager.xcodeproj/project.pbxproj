@@ -11,6 +11,9 @@
 		3A167D7A1DC36B0F0063ACB0 /* RefreshTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A167D791DC36B0F0063ACB0 /* RefreshTestViewController.swift */; };
 		3A82182A1DCA2D850006CE3A /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8218291DCA2D850006CE3A /* LoginViewController.swift */; };
 		3A82182C1DCA6DC60006CE3A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */; };
+		3A83E7F21E6974170058ADF2 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A83E7F11E6974170058ADF2 /* TestViewController.swift */; };
+		3A83E7F51E69742F0058ADF2 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A83E7F31E69742F0058ADF2 /* LoadingCell.xib */; };
+		3A83E7F61E69742F0058ADF2 /* LoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A83E7F41E69742F0058ADF2 /* LoadMoreCell.xib */; };
 		3AB7D4EE1DC0FDA2009AA63B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */; };
 		3AE299BA1DBA5CB900E31737 /* byv-config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AE299B91DBA5CB900E31737 /* byv-config.plist */; };
 		3AE548EC1DCBB13200EAC28E /* ByvAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */; };
@@ -40,6 +43,9 @@
 		3A167D791DC36B0F0063ACB0 /* RefreshTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshTestViewController.swift; sourceTree = "<group>"; };
 		3A8218291DCA2D850006CE3A /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3A82182B1DCA6DC60006CE3A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3A83E7F11E6974170058ADF2 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		3A83E7F31E69742F0058ADF2 /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
+		3A83E7F41E69742F0058ADF2 /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
 		3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		3AE299B91DBA5CB900E31737 /* byv-config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "byv-config.plist"; sourceTree = "<group>"; };
 		3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByvAppDelegate.swift; sourceTree = "<group>"; };
@@ -129,6 +135,9 @@
 				3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */,
 				3A8218291DCA2D850006CE3A /* LoginViewController.swift */,
 				3A167D791DC36B0F0063ACB0 /* RefreshTestViewController.swift */,
+				3A83E7F11E6974170058ADF2 /* TestViewController.swift */,
+				3A83E7F31E69742F0058ADF2 /* LoadingCell.xib */,
+				3A83E7F41E69742F0058ADF2 /* LoadMoreCell.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -287,6 +296,8 @@
 			files = (
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
+				3A83E7F61E69742F0058ADF2 /* LoadMoreCell.xib in Resources */,
+				3A83E7F51E69742F0058ADF2 /* LoadingCell.xib in Resources */,
 				3A82182C1DCA6DC60006CE3A /* GoogleService-Info.plist in Resources */,
 				3AE299BA1DBA5CB900E31737 /* byv-config.plist in Resources */,
 				607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */,
@@ -402,6 +413,7 @@
 			files = (
 				3A82182A1DCA2D850006CE3A /* LoginViewController.swift in Sources */,
 				3AE548EC1DCBB13200EAC28E /* ByvAppDelegate.swift in Sources */,
+				3A83E7F21E6974170058ADF2 /* TestViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				3A156CE11DBF767B003944BC /* FacebookWebViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
