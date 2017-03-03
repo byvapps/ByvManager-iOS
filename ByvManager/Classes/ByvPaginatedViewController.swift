@@ -87,21 +87,22 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
             tableView.addSubview(refreshControl)
         }
         
-        // Tint color bug fixx START
-        self.refreshControl.beginRefreshing()
-        UIView.animate(withDuration: 0.3, animations: {
-            self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
-            self.tableView.layoutIfNeeded()
-        }, completion: { (ended) in
-            self.refreshControl.endRefreshing()
-            self.tableView.layoutIfNeeded()
-            self.tableView.reloadData()
-            self.refreshTable(false)
-        })
-        
-        self.refreshControl.endRefreshing()
-        // Tint color bug fixx END
-        // else self.refreshTable(true)
+//        // Tint color bug fixx START
+//        self.refreshControl.beginRefreshing()
+//        UIView.animate(withDuration: 0.3, animations: {
+//            self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
+//            self.tableView.layoutIfNeeded()
+//        }, completion: { (ended) in
+//            self.refreshControl.endRefreshing()
+//            self.tableView.layoutIfNeeded()
+//            self.tableView.reloadData()
+//            self.refreshTable(false)
+//        })
+//        
+//        self.refreshControl.endRefreshing()
+//        // Tint color bug fixx END
+        // else
+        self.refreshTable()
     }
     
     override open func didReceiveMemoryWarning() {
@@ -176,10 +177,10 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
                 self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
                 self.tableView.layoutIfNeeded()
             }, completion: { (ended) in
-                self.loadPage()
+//                self.loadPage()
             })
         } else {
-            loadPage()
+//            loadPage()
         }
         
     }
