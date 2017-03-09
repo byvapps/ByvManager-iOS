@@ -14,6 +14,7 @@
 		3A83E7F21E6974170058ADF2 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A83E7F11E6974170058ADF2 /* TestViewController.swift */; };
 		3A83E7F51E69742F0058ADF2 /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A83E7F31E69742F0058ADF2 /* LoadingCell.xib */; };
 		3A83E7F61E69742F0058ADF2 /* LoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3A83E7F41E69742F0058ADF2 /* LoadMoreCell.xib */; };
+		3AA307321E707C6B009E7C96 /* EmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3AA307311E707C6B009E7C96 /* EmptyView.xib */; };
 		3AB7D4EE1DC0FDA2009AA63B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */; };
 		3AE299BA1DBA5CB900E31737 /* byv-config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3AE299B91DBA5CB900E31737 /* byv-config.plist */; };
 		3AE548EC1DCBB13200EAC28E /* ByvAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */; };
@@ -46,6 +47,7 @@
 		3A83E7F11E6974170058ADF2 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		3A83E7F31E69742F0058ADF2 /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
 		3A83E7F41E69742F0058ADF2 /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
+		3AA307311E707C6B009E7C96 /* EmptyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmptyView.xib; sourceTree = "<group>"; };
 		3AB7D4ED1DC0FDA2009AA63B /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		3AE299B91DBA5CB900E31737 /* byv-config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "byv-config.plist"; sourceTree = "<group>"; };
 		3AE548EB1DCBB13200EAC28E /* ByvAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByvAppDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				3A83E7F11E6974170058ADF2 /* TestViewController.swift */,
 				3A83E7F31E69742F0058ADF2 /* LoadingCell.xib */,
 				3A83E7F41E69742F0058ADF2 /* LoadMoreCell.xib */,
+				3AA307311E707C6B009E7C96 /* EmptyView.xib */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -294,6 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AA307321E707C6B009E7C96 /* EmptyView.xib in Resources */,
 				607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */,
 				607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */,
 				3A83E7F61E69742F0058ADF2 /* LoadMoreCell.xib in Resources */,

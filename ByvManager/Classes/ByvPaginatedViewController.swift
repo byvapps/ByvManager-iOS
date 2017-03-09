@@ -40,6 +40,8 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
     
     @IBOutlet weak public var tableView: UITableView!
     
+    public var emptyView: UIView? = nil
+    
     let refreshControl: UIRefreshControl = UIRefreshControl()
     
     public var loadinCellId:String = "ByvPaginatedLoadingCellId"
@@ -87,20 +89,20 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
             tableView.addSubview(refreshControl)
         }
         
-//        // Tint color bug fixx START
-//        self.refreshControl.beginRefreshing()
-//        UIView.animate(withDuration: 0.3, animations: {
-//            self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
-//            self.tableView.layoutIfNeeded()
-//        }, completion: { (ended) in
-//            self.refreshControl.endRefreshing()
-//            self.tableView.layoutIfNeeded()
-//            self.tableView.reloadData()
-//            self.refreshTable(false)
-//        })
-//        
-//        self.refreshControl.endRefreshing()
-//        // Tint color bug fixx END
+        //        // Tint color bug fixx START
+        //        self.refreshControl.beginRefreshing()
+        //        UIView.animate(withDuration: 0.3, animations: {
+        //            self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
+        //            self.tableView.layoutIfNeeded()
+        //        }, completion: { (ended) in
+        //            self.refreshControl.endRefreshing()
+        //            self.tableView.layoutIfNeeded()
+        //            self.tableView.reloadData()
+        //            self.refreshTable(false)
+        //        })
+        //
+        //        self.refreshControl.endRefreshing()
+        //        // Tint color bug fixx END
         // else
         self.refreshTable()
     }
@@ -177,10 +179,10 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
                 self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
                 self.tableView.layoutIfNeeded()
             }, completion: { (ended) in
-//                self.loadPage()
+                //                self.loadPage()
             })
         } else {
-//            loadPage()
+            //            loadPage()
         }
         
     }
@@ -211,7 +213,6 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
                 var params = section.params
                 params["offset"] = NSNumber(value: section.page * section.limit)
                 params["limit"] = NSNumber(value: section.limit)
-                print(params)
                 
                 ConManager.GET(section.url , params: params, auth: true, background: true, success: { (responseData) in
                     if self.isRefreshingInBackground {
@@ -257,20 +258,41 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
                             }
                             
                             self.tableView.endUpdates()
+                            self.checkEmptyView()
                         } else {
                             section.isLoadingData = false
+                            section.isFullLoaded = true
                             self.tableView.reloadData()
+                            self.checkEmptyView()
                         }
                         self.isRefreshingInBackground = false
                         self.refreshControl.endRefreshing()
+                        self.checkEmptyView()
                     }
                 }, failed: { (error) in
                     section.isLoadingData = false
+                    section.isFullLoaded = true
                     self.refreshControl.endRefreshing()
                     self.tableView.reloadData()
+                    self.checkEmptyView()
                 })
             }
         }
+    }
+    
+    func checkEmptyView() {
+        for section in sections {
+            if section.items.count > 0 {
+                self.tableView.backgroundView = nil
+                return
+            }
+            if !section.isFullLoaded {
+                self.tableView.backgroundView = nil
+                return
+            }
+        }
+        
+        self.tableView.backgroundView = self.emptyView
     }
     
     func sectionIndex(_ section: ByvPaginatedSection) -> Int {

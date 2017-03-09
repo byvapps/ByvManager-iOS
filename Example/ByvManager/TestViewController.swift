@@ -13,15 +13,18 @@ import SwiftyJSON
 class PaginatedTestViewController: ByvPaginatedViewController {
 
     override func viewDidLoad() {
-        let url = "api/stations/near"
+        
+        self.emptyView = UINib(nibName: "EmptyView", bundle: nil).instantiate(withOwner: self, options: nil)[0] as? UIView
+        
+        let url = "api/search"
         let section = ByvPaginatedSection()
         section.url = url
         section.limit = 10
         section.automaticallyLoadNextPage = true
-        section.loadingCellNib = UINib(nibName: "LoadingCell", bundle: nil)
-        section.loadMoreCellNib = UINib(nibName: "LoadMoreCell", bundle: nil)
-        section.params["latitude"] = NSNumber(value: 43.267783)
-        section.params["longitude"] = NSNumber(value: -2.924246)
+//        section.loadingCellNib = UINib(nibName: "LoadingCell", bundle: nil)
+//        section.loadMoreCellNib = UINib(nibName: "LoadMoreCell", bundle: nil)
+//        section.params["latitude"] = NSNumber(value: 43.267783)
+//        section.params["longitude"] = NSNumber(value: -2.924246)
 //        section.deleteRowAnimation = .left
 //        section.insertRowAnimation = .right
         self.sections.append(section)
@@ -59,7 +62,7 @@ class PaginatedTestViewController: ByvPaginatedViewController {
     
     // Override to filter elemnts if need
     override open func filterItems(_ newItems: [JSON], in sectionIndex:Int) -> Array<Any> {
-        return []
+        return[]
         return newItems
     }
     
