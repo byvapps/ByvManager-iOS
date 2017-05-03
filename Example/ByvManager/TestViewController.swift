@@ -62,7 +62,6 @@ class PaginatedTestViewController: ByvPaginatedViewController {
     
     // Override to filter elemnts if need
     override open func filterItems(_ newItems: [JSON], in sectionIndex:Int) -> Array<Any> {
-        return[]
         return newItems
     }
     

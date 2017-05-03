@@ -108,8 +108,8 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if ByvManager.debugMode {
-            print("URL: \(request.url?.absoluteURL)")
-            print("PATH: \(request.url?.path)")
+            print("URL: \(String(describing: request.url?.absoluteURL))")
+            print("PATH: \(String(describing: request.url?.path))")
         }
         
         let callbackPath = "/\(type.path())/\(url_social_callback())"

@@ -10,20 +10,20 @@ import UIKit
 import SwiftyJSON
 
 public class ByvPaginatedSection {
-    public var url:String = ""
+    public var url: String = ""
     public var limit: Int = 10
     public var offset: Int = 0
-    public var params:Dictionary<String, Any> = ["offset" :  NSNumber(value:0), "limit" : NSNumber(value:10)]
-    public var cellIdentifier:String = "cell"
-    public var showLoadingCell:Bool = true
-    public var automaticallyLoadNextPage:Bool = false
+    public var params: [String: Any] = ["offset" :  NSNumber(value:0), "limit" : NSNumber(value:10)]
+    public var cellIdentifier: String = "cell"
+    public var showLoadingCell: Bool = true
+    public var automaticallyLoadNextPage: Bool = false
     public var loadingCellNib: UINib? = nil
     public var loadMoreCellNib: UINib? = nil
     
     public var insertRowAnimation: UITableViewRowAnimation = .none
     public var deleteRowAnimation: UITableViewRowAnimation = .fade
     
-    public var items:Array<Any> = []
+    public var items: [Any] = []
     
     public var isLoadingData:Bool = false
     public var startPage:Int = 0
@@ -36,7 +36,7 @@ public class ByvPaginatedSection {
     }
 }
 
-open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+open class ByvPaginatedViewController: UIViewController {
     
     @IBOutlet weak public var tableView: UITableView!
     
@@ -44,11 +44,11 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
     
     let refreshControl: UIRefreshControl = UIRefreshControl()
     
-    public var loadinCellId:String = "ByvPaginatedLoadingCellId"
-    public var loadMoreCellId:String = "ByvPaginatedLoadMoreCellId"
+    public var loadinCellId: String = "ByvPaginatedLoadingCellId"
+    public var loadMoreCellId: String = "ByvPaginatedLoadMoreCellId"
     
-    var isRefreshingInBackground:Bool = false
-    public var sections:Array<ByvPaginatedSection> = []
+    var isRefreshingInBackground: Bool = false
+    public var sections: [ByvPaginatedSection] = []
     public var allowPullToRefresh: Bool = true
     
     override open func viewDidLoad() {
@@ -89,21 +89,6 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
             tableView.addSubview(refreshControl)
         }
         
-        //        // Tint color bug fixx START
-        //        self.refreshControl.beginRefreshing()
-        //        UIView.animate(withDuration: 0.3, animations: {
-        //            self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.bounds.size.height)
-        //            self.tableView.layoutIfNeeded()
-        //        }, completion: { (ended) in
-        //            self.refreshControl.endRefreshing()
-        //            self.tableView.layoutIfNeeded()
-        //            self.tableView.reloadData()
-        //            self.refreshTable(false)
-        //        })
-        //
-        //        self.refreshControl.endRefreshing()
-        //        // Tint color bug fixx END
-        // else
         self.refreshTable()
     }
     
@@ -134,41 +119,6 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
     open func didSelect(item: Any, at indexPath:IndexPath) {
         print("item selected at index: \(indexPath.section)-\(indexPath.row)")
         self.tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    // tableview delegate & data source
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("section: \(indexPath.section) - row: \(indexPath.row)")
-        let section = sections[indexPath.section]
-        if indexPath.row >= section.items.count {
-            if section.automaticallyLoadNextPage {
-                let identifier = "loadingCell_\(indexPath.section)"
-                let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: identifier, for:indexPath)
-                if let aiv = cell.viewWithTag(310584) as? UIActivityIndicatorView {
-                    aiv.startAnimating()
-                }
-                
-                if self.toLoadSection() === section && section.automaticallyLoadNextPage && !section.isLoadingData {
-                    if indexPath.row == section.items.count {
-                        //                    self.perform(#selector(self.loadPage(_:)), with: nil, afterDelay: 0.1)
-                        self.loadPage()
-                    }
-                }
-                
-                return cell
-            } else {
-                let identifier = "loadMoreCell_\(indexPath.section)"
-                let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: identifier, for:indexPath)
-                return cell
-            }
-        } else {
-            let item = section.items[indexPath.row]
-            let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifierFor(indexPath: indexPath, item: item), for:indexPath)
-            
-            updateCell(cell: cell, with: item)
-            
-            return cell
-        }
     }
     
     public func refreshTable(_ animated: Bool = false) {
@@ -315,6 +265,46 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         return nil
     }
     
+}
+
+
+// MARK: UITableViewDataSource & UITableViewDelegate Methods
+extension ByvPaginatedViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("section: \(indexPath.section) - row: \(indexPath.row)")
+        let section = sections[indexPath.section]
+        if indexPath.row >= section.items.count {
+            if section.automaticallyLoadNextPage {
+                let identifier = "loadingCell_\(indexPath.section)"
+                let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: identifier, for:indexPath)
+                if let aiv = cell.viewWithTag(310584) as? UIActivityIndicatorView {
+                    aiv.startAnimating()
+                }
+                
+                if self.toLoadSection() === section && section.automaticallyLoadNextPage && !section.isLoadingData {
+                    if indexPath.row == section.items.count {
+                        //                    self.perform(#selector(self.loadPage(_:)), with: nil, afterDelay: 0.1)
+                        self.loadPage()
+                    }
+                }
+                
+                return cell
+            } else {
+                let identifier = "loadMoreCell_\(indexPath.section)"
+                let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: identifier, for:indexPath)
+                return cell
+            }
+        } else {
+            let item = section.items[indexPath.row]
+            let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifierFor(indexPath: indexPath, item: item), for:indexPath)
+            
+            updateCell(cell: cell, with: item)
+            
+            return cell
+        }
+    }
+    
     public func numberOfSections(in tableView: UITableView) -> Int {
         var response:Int = 0
         
@@ -333,7 +323,6 @@ open class ByvPaginatedViewController: UIViewController, UITableViewDelegate, UI
         let selectedSection = toLoadSection()
         if selectedSection === section && !section.isFullLoaded && (!section.automaticallyLoadNextPage || section.showLoadingCell) {
             return section.items.count + 1
-            
         }
         return section.items.count
     }

@@ -135,7 +135,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                             print("REQUEST REFERSH:\nParams:")
                             dump(parameters)
                             debugPrint(response)
-                            print("Data: \(String(data: response.data!, encoding: .utf8))")
+                            print("Data: \(String(describing: String(data: response.data!, encoding: .utf8)))")
                         }
                         if response.response?.statusCode == 401 {
                             //Refresh token invalid

@@ -32,8 +32,8 @@ class FacebookWebViewController: UIViewController, UIWebViewDelegate {
     }
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        print("URL: \(request.url?.absoluteURL)")
-        print("PATH: \(request.url?.path)")
+        print("URL: \(String(describing: request.url?.absoluteURL))")
+        print("PATH: \(String(describing: request.url?.path))")
         
         let callbackPath = "/\(url_facebook_login())/\(url_social_callback())"
         print("callbackPath: \(callbackPath)")
@@ -53,8 +53,8 @@ class FacebookWebViewController: UIViewController, UIWebViewDelegate {
                 
             }
             
-            print("access_token: \(params["access_token"])")
-            print("refresh_token: \(params["refresh_token"])")
+            print("access_token: \(String(describing: params["access_token"]))")
+            print("refresh_token: \(String(describing: params["refresh_token"]))")
             
             
             

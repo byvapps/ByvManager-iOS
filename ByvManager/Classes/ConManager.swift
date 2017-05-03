@@ -309,7 +309,7 @@ public struct ConManager {
                 case .failure(let error):
                     if let data = response.data {
                         let result = String(data: data, encoding: .utf8)
-                        print("Error(\(responseCode)): \(result)")
+                        print("Error(\(responseCode)): \(String(describing: result))")
                         let err = ConManager.getError(response, _error: error, _code: responseCode)
                         if !background {
                             SVProgressHUD.showError(withStatus: err.localized_description)
