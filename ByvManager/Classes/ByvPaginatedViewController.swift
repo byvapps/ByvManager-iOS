@@ -10,6 +10,7 @@ import UIKit
 import SwiftyJSON
 
 public class ByvPaginatedSection {
+    public var idStr: String = ""
     public var url: String = ""
     public var limit: Int = 10
     public var offset: Int = 0
@@ -160,6 +161,9 @@ open class ByvPaginatedViewController: UIViewController {
         if let section = toLoadSection() {
             if !section.isLoadingData {
                 section.isLoadingData = true
+                if !shouldLoadItems(at: section) {
+                    return
+                }
                 var params = section.params
                 params["offset"] = NSNumber(value: section.page * section.limit)
                 params["limit"] = NSNumber(value: section.limit)
@@ -167,19 +171,21 @@ open class ByvPaginatedViewController: UIViewController {
                 ConManager.GET(section.url , params: params, auth: true, background: true, success: { (responseData) in
                     if self.isRefreshingInBackground {
                         self.tableView.reloadData()
+                        self.isRefreshingInBackground = false
                     }
-                    section.page = section.page + 1
                     section.isLoadingData = false
+                    var newItems:[Any] = []
                     if let data: Data = responseData?.data {
                         let json = JSON(data: data)
                         if let jsonArray = json.array {
+                            section.page = section.page + 1
                             let newItemsCount = jsonArray.count
                             let sectionIndex = self.sectionIndex(section)
                             let lastIndex = section.items.count
                             let lastIndexPath = IndexPath(row: lastIndex, section: sectionIndex)
+                            newItems = self.filterItems(jsonArray, in: self.sectionIndex(section))
                             self.tableView.beginUpdates()
                             self.tableView.deleteRows(at: [lastIndexPath], with: section.deleteRowAnimation)
-                            let newItems = self.filterItems(jsonArray, in: self.sectionIndex(section))
                             if newItems.count > 0 {
                                 var indexes: Array<IndexPath> = []
                                 for i in lastIndex...lastIndex+newItems.count - 1 {
@@ -215,20 +221,35 @@ open class ByvPaginatedViewController: UIViewController {
                             self.tableView.reloadData()
                             self.checkEmptyView()
                         }
-                        self.isRefreshingInBackground = false
-                        self.refreshControl.endRefreshing()
-                        self.checkEmptyView()
                     }
+                    self.refreshControl.endRefreshing()
+                    self.checkEmptyView()
+                    self.didLoad(items: newItems, at: section)
                 }, failed: { (error) in
                     section.isLoadingData = false
                     section.isFullLoaded = true
                     self.refreshControl.endRefreshing()
                     self.tableView.reloadData()
                     self.checkEmptyView()
+                    self.didFailLoadingItems(at: section)
                 })
             }
         }
     }
+    
+    /* To override */
+    func shouldLoadItems(at section:ByvPaginatedSection) -> Bool {
+        return true
+    }
+    
+    func didLoad(items:[Any], at section:ByvPaginatedSection) {
+        
+    }
+    
+    func didFailLoadingItems(at section:ByvPaginatedSection) {
+        
+    }
+    /* END To override */
     
     func checkEmptyView() {
         for section in sections {
