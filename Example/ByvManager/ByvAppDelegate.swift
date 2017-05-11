@@ -17,6 +17,7 @@ import FirebaseInstanceID
 import FirebaseMessaging
 import FirebaseDynamicLinks
 import BRYXBanner
+import Google
 
 open class ByvAppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -69,7 +70,21 @@ open class ByvAppDelegate: UIResponder, UIApplicationDelegate {
                                                    object: nil)
         }
         
+        self.setupGoogleAnalytics()
+        
         return true
+    }
+    
+    func setupGoogleAnalytics() {
+        
+        // Configure tracker from GoogleService-Info.plist.
+        var configureError:NSError? = nil
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(String(describing: configureError))")
+        
+        let gai = GAI.sharedInstance()
+        gai?.trackUncaughtExceptions = true  // report uncaught exceptions
+        gai?.logger.logLevel = GAILogLevel.verbose  // remove before app release
     }
     
     open func applicationDidBecomeActive(_ application: UIApplication) {

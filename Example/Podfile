@@ -5,6 +5,7 @@ target 'ByvManager_Example' do
   pod 'Firebase'
   pod 'Firebase/DynamicLinks'
   pod 'Firebase/Messaging'
+  pod 'Google/Analytics'
 
   target 'ByvManager_Tests' do
     inherit! :search_paths
