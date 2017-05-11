@@ -238,15 +238,15 @@ open class ByvPaginatedViewController: UIViewController {
     }
     
     /* To override */
-    func shouldLoadItems(at section:ByvPaginatedSection) -> Bool {
+    open func shouldLoadItems(at section:ByvPaginatedSection) -> Bool {
         return true
     }
     
-    func didLoad(items:[Any], at section:ByvPaginatedSection) {
+    open func didLoad(items:[Any], at section:ByvPaginatedSection) {
         
     }
     
-    func didFailLoadingItems(at section:ByvPaginatedSection) {
+    open func didFailLoadingItems(at section:ByvPaginatedSection) {
         
     }
     /* END To override */
