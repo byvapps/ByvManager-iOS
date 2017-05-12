@@ -32,6 +32,7 @@ public struct Device {
     var pushId: String?
     var badge: Int
     var languageCode: String?
+    var preferredLang: String?
     var countyCode: String?
     var regionCode: String?
     var currencyCode: String?
@@ -77,6 +78,10 @@ public struct Device {
         
         if let pushId = stored["pushId"].string {
             self.pushId = pushId
+        }
+        
+        if let preferredLang = stored["preferredLang"].string {
+            self.preferredLang = preferredLang
         }
         
         let formatter: DateFormatter = DateFormatter()
@@ -175,6 +180,9 @@ public struct Device {
         }
         if let languageCode = self.languageCode {
             response["languageCode"] = languageCode
+        }
+        if let preferredLang = self.preferredLang {
+            response["preferredLang"] = preferredLang
         }
         if let countyCode = self.countyCode {
             response["countyCode"] = countyCode

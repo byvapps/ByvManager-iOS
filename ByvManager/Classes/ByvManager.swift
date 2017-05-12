@@ -24,6 +24,7 @@ public protocol SilentPushModel {
 public struct ByvNotifications {
     public static let login = Notification.Name("ByvNotificationLogin")
     public static let logout = Notification.Name("ByvNotificationLogout")
+    public static let credUpdated = Notification.Name("ByvNotificationCredentialsUpdated")
 }
 
 // MARK: - ByvManager

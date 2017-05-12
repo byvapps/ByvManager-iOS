@@ -40,7 +40,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.reloadCredentials),
-                                               name: ByvNotifications.login,
+                                               name: ByvNotifications.credUpdated,
                                                object: nil)
     }
     

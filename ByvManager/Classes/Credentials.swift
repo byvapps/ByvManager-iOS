@@ -33,7 +33,7 @@ public struct Credentials {
         if let refresh_token = json[Credentials.refreshTokenKey()].string {
             self.refresh_token = refresh_token
         } else {
-             self.refresh_token = ""
+            self.refresh_token = ""
         }
     }
     
@@ -45,7 +45,7 @@ public struct Credentials {
             var credentials = Credentials(data)
             if credentials.access_token.characters.count > 0 {
                 credentials.store()
-                NotificationCenter.default.post(name: ByvNotifications.login, object: nil)
+                NotificationCenter.default.post(name: ByvNotifications.credUpdated, object: nil)
                 return credentials
             }
         }
