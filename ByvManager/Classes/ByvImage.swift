@@ -142,7 +142,7 @@ public class ByvImage : NSObject, NSCoding {
 
 extension BvWebImageView {
     
-    public func setImage(with bvImage:ByvImage, blur:UIBlurEffectStyle? = .light, showProgressbar:Bool = false) {
+    public func setBvImage(_ bvImage:ByvImage, blur:UIBlurEffectStyle? = .light, showProgressbar:Bool = false, autoload:Bool = true) {
         var image:UIImage? = nil
         if let base64Str = bvImage.base64, let data = Data(base64Encoded: base64Str) {
             image = UIImage(data: data)
@@ -155,6 +155,9 @@ extension BvWebImageView {
         }
         self.setProgressMask(mask)
         self.urlStr = Environment.absoluteUrl(bvImage.urlStr)
+        if autoload {
+            self.loadImage()
+        }
     }
     
 }
