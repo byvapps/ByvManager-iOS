@@ -37,8 +37,8 @@ public enum Environment {
         return current.baseUrl()
     }
     
-    public static func absoluteUrl(_ path: Any?) -> String? {
-        if var temp = path as? String {
+    public static func absoluteUrl(_ path: String?) -> String {
+        if var temp = path {
             if !temp.contains("http") {
                 if !temp.hasPrefix("/") {
                     temp = "/" + temp
@@ -47,15 +47,10 @@ public enum Environment {
             }
             return temp
         }
-        return nil
+        return ""
     }
     
     public static func getAbsoluteURL(_ url: String?) -> URL? {
-        if let urlStr = Environment.absoluteUrl(url) {
-            if let absoluteUrl : URL = URL(string: urlStr) {
-                return absoluteUrl
-            }
-        }
-        return nil
+        return URL(string: Environment.absoluteUrl(url))
     }
 }

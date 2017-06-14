@@ -128,7 +128,7 @@ public class ByvManager {
                         SVProgressHUD.dismiss()
                         let modal = ByvModalNav(rootViewController: vc as! UIViewController)
                         modal.onlyInRoot = false
-                        UIViewController.presentFromVisibleViewController(viewControllerToPresent: modal, animated: true, completion: nil)
+                        UIViewController.presentFromVisibleViewController(modal, animated: true, completion: nil)
                     } else {
                         SVProgressHUD.showError(withStatus: NSLocalizedString("Error cargando el contenido", comment: ""))
                     }

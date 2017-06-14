@@ -261,3 +261,22 @@ extension ByvAppDelegate : FIRMessagingDelegate {
     }
 }
 // [END ios_10_message_handling]
+
+
+
+// Google Analytics
+class ByvGA {
+    public static func setUserId(_ userId:Int?) {
+        var value:String? = nil
+        if let userId = userId {
+            value = "\(userId)"
+        }
+        GAI.sharedInstance().defaultTracker.set(kGAIUserId, value: value)
+    }
+    
+    public static func sendEvent(category:String?, action:String?, label:String? = nil, value:NSNumber? = nil) {
+        if let builder = GAIDictionaryBuilder.createEvent(withCategory: category, action: action, label: label, value: value) {
+            GAI.sharedInstance().defaultTracker?.send(builder.build() as [NSObject : AnyObject])
+        }
+    }
+}
