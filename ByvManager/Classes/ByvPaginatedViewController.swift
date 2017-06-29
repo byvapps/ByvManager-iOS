@@ -43,7 +43,7 @@ open class ByvPaginatedViewController: UIViewController {
     
     public var emptyView: UIView? = nil
     
-    let refreshControl: UIRefreshControl = UIRefreshControl()
+    public let refreshControl: UIRefreshControl = UIRefreshControl()
     
     public var loadinCellId: String = "ByvPaginatedLoadingCellId"
     public var loadMoreCellId: String = "ByvPaginatedLoadMoreCellId"
