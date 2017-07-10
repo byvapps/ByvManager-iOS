@@ -12,37 +12,37 @@ import BvImages
 
 public struct ByvImageMeta {
     
-    var json: JSON
+    public var json: JSON
     
-    lazy var channels: Int = {
+    public lazy var channels: Int = {
         return self.json["channels"].intValue
     }()
-    lazy var density: Int = {
+    public lazy var density: Int = {
         return self.json["density"].intValue
     }()
-    lazy var depth : String = {
+    public lazy var depth : String = {
         return self.json["depth"].stringValue
     }()
-    lazy var format : String = {
+    public lazy var format : String = {
         return self.json["format"].stringValue
     }()
-    lazy var hasAlpha : Bool = {
+    public lazy var hasAlpha : Bool = {
         return self.json["hasAlpha"].boolValue
     }()
-    lazy var hasProfile : Bool = {
+    public lazy var hasProfile : Bool = {
         return self.json["format"].boolValue
     }()
-    lazy var height : Int = {
+    public lazy var height : Int = {
         return self.json["height"].intValue
     }()
-    lazy var space : String  = {
+    public lazy var space : String  = {
         return self.json["space"].stringValue
     }()
-    lazy var width : Int = {
+    public lazy var width : Int = {
         return self.json["width"].intValue
     }()
     
-    init(from json: JSON){
+    public init(from json: JSON){
         self.json = json
     }
 }
