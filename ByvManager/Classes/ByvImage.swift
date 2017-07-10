@@ -50,49 +50,49 @@ public struct ByvImageMeta {
 
 public class ByvImage : NSObject, NSCoding {
     
-    var json: JSON
+    public var json: JSON
     
-    lazy var createdAt: String = {
+    public lazy var createdAt: String = {
         return self.json["createdAt"].stringValue
     }()
-    lazy var id: Int = {
+    public lazy var id: Int = {
         return self.json["id"].intValue
     }()
-    lazy var meta: ByvImageMeta = {
+    public lazy var meta: ByvImageMeta = {
         return ByvImageMeta(from: self.json["meta"])
     }()
-    lazy var name: String = {
+    public lazy var name: String = {
         return self.json["name"].stringValue
     }()
-    lazy var updatedAt: String = {
+    public lazy var updatedAt: String = {
         return self.json["updatedAt"].stringValue
     }()
-    lazy var defaultUrl: String = {
+    public lazy var defaultUrl: String = {
         return self.json["url"].stringValue
     }()
-    lazy var sizes: JSON = {
+    public lazy var sizes: JSON = {
         return self.json["urls"]
     }()
 
-    var base64: String? {
+    public var base64: String? {
         get {
             return sizes["base64"]["url"].string
         }
     }
     
-    var urlStr: String {
+    public var urlStr: String {
         get {
             return self.optimalSize()["url"].stringValue
         }
     }
     
-    var url: URL? {
+    public var url: URL? {
         get {
             return URL(string: self.optimalSize()["url"].stringValue)
         }
     }
     
-    var size: CGSize {
+    public var size: CGSize {
         get {
             return CGSize(width:self.meta.width, height:self.meta.height)
         }
@@ -101,7 +101,7 @@ public class ByvImage : NSObject, NSCoding {
 	/**
 	 * Instantiate the instance using the passed json values to set the properties values
 	 */
-	init(from json: JSON) {
+	public init(from json: JSON) {
         self.json = json
 	}
     
@@ -111,7 +111,11 @@ public class ByvImage : NSObject, NSCoding {
      */
     @objc required public init(coder aDecoder: NSCoder)
     {
-        self.json = JSON((aDecoder.decodeObject(forKey: "jsonStr") as? String) ?? "")
+        if let rawJsonString = aDecoder.decodeObject(forKey: "jsonStr") as? String {
+            self.json = JSON.parse(rawJsonString)
+        } else {
+            self.json = [:]
+        }
     }
     
     /**
@@ -125,7 +129,7 @@ public class ByvImage : NSObject, NSCoding {
         }
     }
     
-    func optimalSize() -> JSON {
+    public func optimalSize() -> JSON {
         var response = JSON(["url":self.defaultUrl,
                             "w": self.meta.width,
                             "h": self.meta.height])
