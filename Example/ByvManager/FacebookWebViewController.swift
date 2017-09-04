@@ -41,7 +41,7 @@ class FacebookWebViewController: UIViewController, UIWebViewDelegate {
             let urlComponents = NSURLComponents(string: request.url!.absoluteString)
             let queryItems = urlComponents?.queryItems
             
-            var params: Dictionary <String, Any> = Dictionary()
+            var params: [String: Any?] = [:]
             for item in queryItems! {
                 params[item.name] = item.value
             }
