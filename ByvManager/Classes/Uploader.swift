@@ -17,7 +17,7 @@ public struct Uploader {
                            mimeType:String,
                            path:String? = nil,
                            progress:((_ progress:Progress) -> Void)?,
-                           completion:((_ url:String?) -> Void)?) {
+                           completion:((_ json:JSON?) -> Void)?) {
         let fileName = "\(name).\(ext)"
         
         let parameters = [
@@ -42,8 +42,7 @@ public struct Uploader {
                 
                 upload.responseData { responseData in
                     if let data = responseData.data {
-                        let json = JSON(data: data)
-                        completion?(json["url"].stringValue)
+                        completion?(JSON(data: data))
                     } else {
                         completion?(nil)
                     }
@@ -61,7 +60,7 @@ public struct Uploader {
                                  path:String? = nil,
                                  quality:CGFloat = 0.8,
                                  progress:((_ progress:Progress) -> Void)? = nil,
-                                 completion:((_ url:String?) -> Void)?) {
+                                 completion:((_ json:JSON?) -> Void)?) {
         if let data = UIImageJPEGRepresentation(image, quality) {
             uploadFile(data, name: name, ext: ".jpeg", mimeType: "image/jpeg", path: path, progress: progress, completion: completion)
         } else {
@@ -73,7 +72,7 @@ public struct Uploader {
                                  name:String = "file",
                                  path:String? = nil,
                                  progress:((_ progress:Progress) -> Void)? = nil,
-                                 completion:((_ url:String?) -> Void)?) {
+                                 completion:((_ json:JSON?) -> Void)?) {
         if let data = UIImagePNGRepresentation(image) {
             uploadFile(data, name: name, ext: ".png", mimeType: "image/png", path: path, progress: progress, completion: completion)
         } else {
@@ -87,7 +86,7 @@ public extension UIImage {
                                  path:String? = nil,
                                  quality:CGFloat = 0.8,
                                  progress:((_ progress:Progress) -> Void)? = nil,
-                                 completion:((_ url:String?) -> Void)?) {
+                                 completion:((_ json:JSON?) -> Void)?) {
         if let data = UIImageJPEGRepresentation(self, quality) {
             Uploader.uploadFile(data, name: name, ext: ".jpeg", mimeType: "image/jpeg", path: path, progress: progress, completion: completion)
         } else {
@@ -98,7 +97,7 @@ public extension UIImage {
     public func uploadAsPng(name:String = "file",
                                  path:String? = nil,
                                  progress:((_ progress:Progress) -> Void)? = nil,
-                                 completion:((_ url:String?) -> Void)?) {
+                                 completion:((_ json:JSON?) -> Void)?) {
         if let data = UIImagePNGRepresentation(self) {
             Uploader.uploadFile(data, name: name, ext: ".png", mimeType: "image/png", path: path, progress: progress, completion: completion)
         } else {
