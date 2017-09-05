@@ -36,6 +36,15 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
         self.clientID = Configuration.auth("byv_client_id") as! String
         self.clientSecret = Configuration.auth("byv_client_secret") as! String
         self.baseURLString = Environment.baseUrl()
+        self.reloadCredentials()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.reloadCredentials),
+                                               name: ByvNotifications.credUpdated,
+                                               object: nil)
+    }
+    
+    @objc private func reloadCredentials() {
         if let cred = Credentials.current() {
             self.accessToken = cred.access_token
             self.refreshToken = cred.refresh_token
@@ -50,9 +59,6 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
             urlRequest.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
             return urlRequest
         }
-        if let url = urlRequest.url, url.absoluteString.hasPrefix(baseURLString) {
-            
-        }
         
         return urlRequest
     }
@@ -63,7 +69,9 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
         lock.lock() ; defer { lock.unlock() }
         
         if let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 {
-            print("CADUCADO!!!!!")
+            if ByvManager.debugMode {
+                print("CADUCADO!!!!!")
+            }
             requestsToRetry.append(completion)
             
             if !isRefreshing {
@@ -89,7 +97,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
     // MARK: - Private - Refresh Tokens
     
     private func refreshTokens(completion: @escaping RefreshCompletion) {
-        guard !isRefreshing else { print("intento de refresh"); return }
+        guard !isRefreshing else { if ByvManager.debugMode {print("intento de refresh")}; return }
         
         if let rt: String = refreshToken {
             
@@ -104,7 +112,9 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                 "grant_type": "refresh_token"
             ]
             
-            print(parameters)
+            if ByvManager.debugMode {
+                print(parameters)
+            }
             var headers: HTTPHeaders? = nil
             if let dId = Device().deviceId {
                 headers = ["DeviceId": "\(dId)"]
@@ -121,13 +131,19 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                         }
                     case .failure(let error):
                         print(error)
+                        if ByvManager.debugMode {
+                            print("REQUEST REFERSH:\nParams:")
+                            dump(parameters)
+                            debugPrint(response)
+                            print("Data: \(String(describing: String(data: response.data!, encoding: .utf8)))")
+                        }
                         if response.response?.statusCode == 401 {
                             //Refresh token invalid
                             Credentials.removeCredentials()
                             completion(false, nil, nil)
                         }
                     }
-                }
+            }
         } else {
             Credentials.removeCredentials()
             completion(false, nil, nil)

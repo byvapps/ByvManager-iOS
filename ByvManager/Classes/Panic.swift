@@ -11,89 +11,86 @@ import ByvUtils
 import SwiftyJSON
 
 public class Panic: NSObject, UIWebViewDelegate {
-
+    
     private static var instance: Panic = Panic()
-    private var webView: UIWebView? = nil
+    private var webViewController: PanicWebViewController? = nil
+    private var preViewController: UIViewController? = nil
     private var webUrl: String? = nil
     private var timer: Timer? = nil
-    var disabled: Bool = false
+    var inPanicMode: Bool = false
     
     public static func check() {
         Panic.instance.check()
     }
     
+    public static func isInPanic() -> Bool {
+        return Panic.instance.inPanicMode
+    }
+    
+    public static func updatePreViewController(_ vc:UIViewController) {
+        Panic.instance.preViewController = vc
+    }
+    
     @objc private func check() {
-        if let url = Environment.absoluteUrl(Configuration.panicUrl()) {
-            ConManager.GET(url, success: { response in
-                if let data:Data = response?.data {
-                    let json = JSON(data: data)
-                    if let disabled: Bool = json["disabled"].bool, disabled == true {
-                        //Disabled
-                        if let _webUrl = Environment.absoluteUrl(json["disabledUrl"]) {
-                            self.webUrl = _webUrl
-                            self.showWeb()
-                            self.timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.check), userInfo: nil, repeats: false)
-                        } else {
-                            self.removeWebView()
-                            return
-                        }
-                    } else if let minVersion: String = json["minVersion"].string, Device().appVersion!.isOlderThan(minVersion) {
-                        //Older version
-                        if let _webUrl = Environment.absoluteUrl(json["minVersionUrl"]) {
-                            self.webUrl = _webUrl
-                            self.showWeb()
-                        } else {
-                            self.removeWebView()
-                            return
-                        }
+        let url = Environment.absoluteUrl(Configuration.panicUrl())
+        ConManager.GET(url, success: { response in
+            if let data:Data = response?.data {
+                let json = JSON(data: data)
+                if let disabled: Bool = json["disabled"].bool, disabled == true {
+                    //Disabled
+                    let _webUrl = Environment.absoluteUrl(json["disabledUrl"].string)
+                    if _webUrl.length > 0 {
+                        self.webUrl = _webUrl
+                        self.showWeb()
+                        self.timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.check), userInfo: nil, repeats: false)
                     } else {
                         self.removeWebView()
                         return
                     }
+                } else if let minVersion: String = json["minVersion"].string, Device().appVersion!.isOlderThan(minVersion) {
+                    //Older version
+                    let _webUrl = Environment.absoluteUrl(json["minVersionUrl"].string)
+                    if _webUrl.length > 0 {
+                        self.webUrl = _webUrl
+                        self.showWeb()
+                    } else {
+                        self.removeWebView()
+                        return
+                    }
+                } else {
+                    self.removeWebView()
+                    return
                 }
-            }, failed: { error in
-                print("ERROR CHECKING PANIC MODE")
-                debugPrint(error)
-            })
-        }
+            }
+        }, failed: { error in
+            print("ERROR CHECKING PANIC MODE")
+            debugPrint(error)
+        })
     }
     
     private func removeWebView() {
-        if webView != nil {
+        inPanicMode = false
+        if webViewController != nil {
             if timer != nil {
                 timer?.invalidate()
                 timer = nil
             }
-            webView?.removeFromSuperview()
-            webView = nil
+            UIApplication.shared.windows[0].rootViewController = preViewController
+            webViewController = nil
             webUrl = nil
         }
     }
     
     private func showWeb() {
-        if webView == nil {
-            if let rootViewController = UIApplication.shared.windows[0].rootViewController, let webUrl = webUrl, let _url = URL(string: webUrl)  {
-                webView = UIWebView(frame: rootViewController.view.frame)
-                webView?.contentMode = UIViewContentMode.scaleToFill
-                webView?.delegate = self
-                webView?.loadRequest(URLRequest(url: _url))
-                rootViewController.view.addSubview(webView!)
+        inPanicMode = true
+        if webViewController == nil {
+            if let webUrl = webUrl, let _url = URL(string: webUrl)  {
+                webViewController = PanicWebViewController()
+                webViewController?.webUrl = _url
+                preViewController = UIApplication.shared.windows[0].rootViewController
+                UIApplication.shared.windows[0].rootViewController = webViewController
             }
-            
         }
     }
     
-    public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if let host = request.url?.host {
-            if webUrl!.contains(host) {
-                return true
-            }
-        }
-        
-        if let url = request.url {
-            UIApplication.shared.openURL(url)
-        }
-        
-        return false
-    }
 }

@@ -162,7 +162,9 @@ public struct Auth {
             // Magic link
             if let code = url.getQueryItemValueForKey("code") {
                 Auth.magicLogin(code: code, background: false, success: { (response) in
-                    print("MAGIC WORKING")
+                    if ByvManager.debugMode {
+                        print("MAGIC WORKING")
+                    }
                 })
                 return true
             }
@@ -185,7 +187,9 @@ public struct Auth {
                     NSLog("OK Pressed")
                     if let password = alertController.textFields?[0].text {
                         Auth.resetLogin(code: code, password: password, background: false, success: { (response) in
-                            print("RESET WORKING")
+                            if ByvManager.debugMode {
+                                print("RESET WORKING")
+                            }
                         })
                     }
                 }

@@ -2,6 +2,26 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>pushNotifications</key>
+	<dict>
+		<key>models</key>
+		<dict>
+			<key>user</key>
+			<string>User</string>
+		</dict>
+		<key>actions</key>
+		<dict>
+			<key>userPublicProfile</key>
+			<dict>
+				<key>storyBoardName</key>
+				<string>CompanyDrivers</string>
+				<key>storyBoardId</key>
+				<string>PublicDriverInfoVC</string>
+				<key>viewControllerClass</key>
+				<string>PublicDriverInfoController</string>
+			</dict>
+		</dict>
+	</dict>
 	<key>google</key>
 	<dict>
 		<key>google_api_key</key>
@@ -12,7 +32,7 @@
 		<key>enabled</key>
 		<true/>
 		<key>dynamic_link_url</key>
-		<string>https://rb3h2.app.goo.gl/</string>
+		<string>https://rb3h2.app.goo.gl</string>
 		<key>dynamic_link_custom_url</key>
 		<string>byvplayground</string>
 	</dict>

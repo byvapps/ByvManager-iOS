@@ -33,7 +33,7 @@ public struct Credentials {
         if let refresh_token = json[Credentials.refreshTokenKey()].string {
             self.refresh_token = refresh_token
         } else {
-             self.refresh_token = ""
+            self.refresh_token = ""
         }
     }
     
@@ -45,6 +45,7 @@ public struct Credentials {
             var credentials = Credentials(data)
             if credentials.access_token.characters.count > 0 {
                 credentials.store()
+                NotificationCenter.default.post(name: ByvNotifications.credUpdated, object: nil)
                 return credentials
             }
         }
@@ -61,14 +62,23 @@ public struct Credentials {
         let defs = UserDefaults.standard
         defs.removeObject(forKey: "credentials")
         defs.synchronize()
+        NotificationCenter.default.post(name: ByvNotifications.logout, object: nil)
     }
     
     public static func current() -> Credentials? {
         let defs = UserDefaults.standard
-        if let data = defs.object(forKey: "credentials") as! Data? {
+        if let data = defs.object(forKey: "credentials") as? Data {
             return Credentials(data)
         }
         return nil
+    }
+    
+    public static func isLoggedIn() -> Bool {
+        let defs = UserDefaults.standard
+        if defs.object(forKey: "credentials") as? Data != nil {
+            return true
+        }
+        return false
     }
     
     public static func token() -> String? {

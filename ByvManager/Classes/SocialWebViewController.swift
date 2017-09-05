@@ -107,16 +107,20 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     }
     
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        print("URL: \(request.url?.absoluteURL)")
-        print("PATH: \(request.url?.path)")
+        if ByvManager.debugMode {
+            print("URL: \(String(describing: request.url?.absoluteURL))")
+            print("PATH: \(String(describing: request.url?.path))")
+        }
         
         let callbackPath = "/\(type.path())/\(url_social_callback())"
-        print("callbackPath: \(callbackPath)")
+        if ByvManager.debugMode {
+            print("callbackPath: \(callbackPath)")
+        }
         if request.url?.path == callbackPath {
             let urlComponents = NSURLComponents(string: request.url!.absoluteString)
             let queryItems = urlComponents?.queryItems
             
-            var params: Dictionary <String, Any> = Dictionary()
+            var params: [String: Any] = [:]
             for item in queryItems! {
                 params[item.name] = item.value
             }

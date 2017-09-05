@@ -10,7 +10,7 @@ import Foundation
 
 public struct Configuration {
     
-    private static var dic: Dictionary <String, Any>? = nil
+    private static var dic: [String: Any]? = nil
     
     // MARK: - Configuration
     
@@ -63,7 +63,7 @@ public struct Configuration {
         return Configuration.getDic("google")?[key]
     }
     
-    public static func getDic(_ key: String) -> Dictionary <String, Any>? {
+    public static func getDic(_ key: String) -> [String: Any]? {
         return Configuration.get(key) as? Dictionary <String, Any>
     }
     
@@ -74,6 +74,20 @@ public struct Configuration {
             } else {
                 return dic["production"] as? String
             }
+        }
+        return nil
+    }
+    
+    public static func pushModel(_ key: String) -> String? {
+        if let push = Configuration.getDic("pushNotifications"), let models = push["models"] as? [String: String] {
+            return models[key]
+        }
+        return nil
+    }
+    
+    public static func pushAction(_ key: String) -> Dictionary <String, String>? {
+        if let push = Configuration.getDic("pushNotifications"), let models = push["actions"] as? [String: [String: String]] {
+            return models[key]
         }
         return nil
     }

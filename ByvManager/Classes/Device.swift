@@ -12,6 +12,8 @@ import SwiftyJSON
 
 public struct Device {
     
+    public static var autoResetBadge = true
+    
     var deviceId: Int?
     var uid: String
     var name: String?
@@ -30,9 +32,11 @@ public struct Device {
     var pushId: String?
     var badge: Int
     var languageCode: String?
+    var preferredLang: String?
     var countyCode: String?
     var regionCode: String?
     var currencyCode: String?
+    var timezone: String?
     
     // MARK: - init
     
@@ -44,8 +48,7 @@ public struct Device {
         if let str = UserDefaults.standard.string(forKey: "deviceJsonData") {
             jsonStr = str
         }
-        let stored = JSON.parse(jsonStr)
-        print("stored: \(stored)")
+        let stored = JSON(parseJSON: jsonStr)
         
         if let id = stored["id"].int {
             self.deviceId = id
@@ -75,6 +78,10 @@ public struct Device {
         
         if let pushId = stored["pushId"].string {
             self.pushId = pushId
+        }
+        
+        if let preferredLang = stored["preferredLang"].string {
+            self.preferredLang = preferredLang
         }
         
         let formatter: DateFormatter = DateFormatter()
@@ -108,6 +115,7 @@ public struct Device {
         countyCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
         regionCode = Locale.current.regionCode
         currencyCode = Locale.current.currencyCode
+        timezone = TimeZone.current.identifier
     }
     
     // MARK: - private
@@ -116,7 +124,11 @@ public struct Device {
     // create or update in server
     //
     private func storeInServer() {
-        let params: Params = self.parameters()
+        var params: Params = self.parameters()
+        if Device.autoResetBadge {
+            params["badge"] = NSNumber(integerLiteral: 0)
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
         var path: String
         var method: HTTPMethod
         if let deviceId = self.deviceId {
@@ -169,6 +181,9 @@ public struct Device {
         if let languageCode = self.languageCode {
             response["languageCode"] = languageCode
         }
+        if let preferredLang = self.preferredLang {
+            response["preferredLang"] = preferredLang
+        }
         if let countyCode = self.countyCode {
             response["countyCode"] = countyCode
         }
@@ -178,11 +193,13 @@ public struct Device {
         if let currencyCode = self.currencyCode {
             response["currencyCode"] = currencyCode
         }
+        if let timezone = self.timezone {
+            response["timezone"] = timezone
+        }
         return response
     }
     
     private func store(_ json: JSON?) {
-        print("JSON: \(json)")
         if json?["id"].int != nil {
             let defs = UserDefaults.standard
             defs.set(json?.rawString(), forKey: "deviceJsonData")
