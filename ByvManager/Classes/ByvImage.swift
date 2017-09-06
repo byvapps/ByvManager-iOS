@@ -61,6 +61,9 @@ public class ByvImage : NSObject, NSCoding {
     public lazy var meta: ByvImageMeta = {
         return ByvImageMeta(from: self.json["meta"])
     }()
+    public lazy var isSecure : Bool = {
+        return self.json["secure"].boolValue
+    }()
     public lazy var name: String = {
         return self.json["name"].stringValue
     }()
@@ -68,7 +71,7 @@ public class ByvImage : NSObject, NSCoding {
         return self.json["updatedAt"].stringValue
     }()
     public lazy var defaultUrl: String = {
-        return self.json["url"].stringValue
+        return self.secureUrl(self.json["url"].stringValue)
     }()
     public lazy var sizes: JSON = {
         return self.json["urls"]
@@ -76,19 +79,22 @@ public class ByvImage : NSObject, NSCoding {
 
     public var base64: String? {
         get {
-            return sizes["base64"]["url"].string
+            if let url = sizes["base64"]["url"].string {
+                return self.secureUrl(url)
+            }
+            return nil
         }
     }
     
     public var urlStr: String {
         get {
-            return self.optimalSize()["url"].stringValue
+            return self.secureUrl(self.optimalSize()["url"].stringValue)
         }
     }
     
     public var url: URL? {
         get {
-            return URL(string: self.optimalSize()["url"].stringValue)
+            return URL(string: self.urlStr)
         }
     }
     
@@ -141,6 +147,13 @@ public class ByvImage : NSObject, NSCoding {
         }
         
         return response
+    }
+    
+    public func secureUrl(_ url:String) -> String {
+        if self.isSecure, let at = Credentials.current()?.access_token {
+            return "\(url)?access_token=\(at)"
+        }
+        return url
     }
 }
 
