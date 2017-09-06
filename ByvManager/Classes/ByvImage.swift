@@ -71,7 +71,7 @@ public class ByvImage : NSObject, NSCoding {
         return self.json["updatedAt"].stringValue
     }()
     public lazy var defaultUrl: String = {
-        return self.secureUrl(self.json["url"].stringValue)
+        return self.json["url"].stringValue
     }()
     public lazy var sizes: JSON = {
         return self.json["urls"]
