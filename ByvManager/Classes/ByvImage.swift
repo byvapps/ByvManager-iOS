@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import AlamofireImage
 import BvImages
 
 public struct ByvImageMeta {
@@ -76,7 +77,7 @@ public class ByvImage : NSObject, NSCoding {
     public lazy var sizes: JSON = {
         return self.json["urls"]
     }()
-
+    
     public var base64: String? {
         get {
             if let url = sizes["base64"]["url"].string {
@@ -103,13 +104,13 @@ public class ByvImage : NSObject, NSCoding {
             return CGSize(width:self.meta.width, height:self.meta.height)
         }
     }
-
-	/**
-	 * Instantiate the instance using the passed json values to set the properties values
-	 */
-	public init(from json: JSON) {
+    
+    /**
+     * Instantiate the instance using the passed json values to set the properties values
+     */
+    public init(from json: JSON) {
         self.json = json
-	}
+    }
     
     /**
      * NSCoding required initializer.
@@ -137,8 +138,8 @@ public class ByvImage : NSObject, NSCoding {
     
     public func optimalSize() -> JSON {
         var response = JSON(["url":self.defaultUrl,
-                            "w": self.meta.width,
-                            "h": self.meta.height])
+                             "w": self.meta.width,
+                             "h": self.meta.height])
         
         if UIScreen.main.scale <= 2 && !self.sizes["200X"].isEmpty {
             response = self.sizes["200X"]
@@ -160,18 +161,26 @@ public class ByvImage : NSObject, NSCoding {
 extension BvWebImageView {
     
     public func setBvImage(_ bvImage:ByvImage, blur:UIBlurEffectStyle? = .light, showProgressbar:Bool = false, autoload:Bool = true) {
-        var image:UIImage? = nil
+        self.urlStr = Environment.absoluteUrl(bvImage.urlStr)
+        let imageDownloader = af_imageDownloader ?? UIImageView.af_sharedImageDownloader
+        let imageCache = imageDownloader.imageCache
+        if let urlStr = self.urlStr, let url = URL(string: urlStr), let cachedImage = imageCache?.image(for: URLRequest(url: url), withIdentifier: nil) {
+            self.image = cachedImage
+            return
+        }
+        
+        var blurImage:UIImage? = nil
         if let base64Str = bvImage.base64, let data = Data(base64Encoded: base64Str) {
-            image = UIImage(data: data)
+            blurImage = UIImage(data: data)
         }
         var mask:BvProgressMask!
         if showProgressbar {
             mask = BarProgressMask(placeholder:image, blur:blur)
         } else {
-            mask = BlurMask(placeholder: image, blur:blur)
+            mask = BlurMask(placeholder: blurImage, blur:blur)
         }
+        
         self.setProgressMask(mask)
-        self.urlStr = Environment.absoluteUrl(bvImage.urlStr)
         if autoload {
             self.loadImage()
         }
