@@ -57,11 +57,7 @@ public struct Device {
         if let uid = stored["uid"].string {
             self.uid = uid
         } else {
-            if let uuid = UIDevice.current.identifierForVendor?.uuidString {
-                self.uid = uuid
-            } else {
-                self.uid = UUID().uuidString
-            }
+            self.uid = ByvKeychainManager.sharedInstance.getDeviceIdentifierFromKeychain()
         }
         
         if let active = stored["active"].int{

@@ -22,7 +22,7 @@ class RefreshTestViewController: UIViewController {
         Timer.scheduledTimer(timeInterval: 8, target: self, selector: #selector(self.loadRequests), userInfo: nil, repeats: true)
     }
     
-    public func loadRequests() {
+    @objc public func loadRequests() {
         
         let max = 10
         var count = 0

@@ -173,7 +173,7 @@ open class ByvAppDelegate: UIResponder, UIApplicationDelegate {
     // [END receive_message]
     
     // [START refresh_token]
-    func tokenRefreshNotification(_ notification: Notification) {
+    @objc func tokenRefreshNotification(_ notification: Notification) {
         if let refreshedToken = FIRInstanceID.instanceID().token() {
             print("InstanceID token: \(refreshedToken)")
             Device.setPushId(refreshedToken)

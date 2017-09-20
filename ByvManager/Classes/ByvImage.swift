@@ -119,7 +119,7 @@ public class ByvImage : NSObject, NSCoding {
     @objc required public init(coder aDecoder: NSCoder)
     {
         if let rawJsonString = aDecoder.decodeObject(forKey: "jsonStr") as? String {
-            self.json = JSON.parse(rawJsonString)
+            self.json = JSON(parseJSON: rawJsonString)
         } else {
             self.json = [:]
         }
