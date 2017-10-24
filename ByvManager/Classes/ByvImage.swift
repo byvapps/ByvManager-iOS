@@ -89,7 +89,8 @@ public class ByvImage : NSObject, NSCoding {
     
     public var urlStr: String {
         get {
-            return self.secureUrl(self.optimalSize()["url"].stringValue)
+            let secureUrlStr = self.secureUrl(self.optimalSize()["url"].stringValue)
+            return secureUrlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? secureUrlStr
         }
     }
     
@@ -119,7 +120,7 @@ public class ByvImage : NSObject, NSCoding {
     @objc required public init(coder aDecoder: NSCoder)
     {
         if let rawJsonString = aDecoder.decodeObject(forKey: "jsonStr") as? String {
-            self.json = JSON.parse(rawJsonString)
+            self.json = JSON(parseJSON: rawJsonString)
         } else {
             self.json = [:]
         }
