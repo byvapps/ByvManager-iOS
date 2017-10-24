@@ -46,6 +46,7 @@ An utility module for internal use in B&V Apps
   s.dependency 'SwiftyJSON'
   s.dependency 'SVProgressHUD'
   s.dependency 'BRYXBanner'
+  s.dependency 'JNKeychain'
   # s.dependency 'Socket.IO-Client-Swift', '~> 8.1.1' # Or latest version
 
 end

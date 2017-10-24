@@ -52,7 +52,7 @@ class PaginatedTestViewController: ByvPaginatedViewController {
         self.navigationItem.rightBarButtonItem = bi
     }
     
-    func reloadAllTable() {
+    @objc func reloadAllTable() {
         super.reloadData()
     }
     

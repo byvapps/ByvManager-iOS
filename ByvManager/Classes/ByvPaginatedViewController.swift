@@ -122,7 +122,7 @@ open class ByvPaginatedViewController: UIViewController {
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    public func refreshTable(_ animated: Bool = false) {
+    @objc public func refreshTable(_ animated: Bool = false) {
         resetSections()
         self.tableView.reloadData()
         if animated == true {

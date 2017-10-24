@@ -163,7 +163,7 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
         SVProgressHUD.showError(withStatus: NSLocalizedString("Error", comment: "Spinner"))
     }
 
-    func close(sender: UIBarButtonItem?) {
+    @objc func close(sender: UIBarButtonItem?) {
         webView.loadHTMLString(html, baseURL: nil)
         if self.navigationController?.viewControllers[0] == self {
             self.dismiss(animated: true, completion: nil)
