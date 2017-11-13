@@ -33,7 +33,7 @@ public struct Device {
     var badge: Int
     var languageCode: String?
     var preferredLang: String?
-    var countyCode: String?
+    var countryCode: String?
     var regionCode: String?
     var currencyCode: String?
     var timezone: String?
@@ -108,7 +108,7 @@ public struct Device {
         appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         appVersionCode = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
         languageCode = Locale.current.languageCode
-        countyCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
+        countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String
         regionCode = Locale.current.regionCode
         currencyCode = Locale.current.currencyCode
         timezone = TimeZone.current.identifier
@@ -180,8 +180,8 @@ public struct Device {
         if let preferredLang = self.preferredLang {
             response["preferredLang"] = preferredLang
         }
-        if let countyCode = self.countyCode {
-            response["countyCode"] = countyCode
+        if let countryCode = self.countryCode {
+            response["countryCode"] = countryCode
         }
         if let regionCode = self.regionCode {
             response["regionCode"] = regionCode
