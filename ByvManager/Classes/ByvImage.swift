@@ -89,7 +89,8 @@ public class ByvImage : NSObject, NSCoding {
     
     public var urlStr: String {
         get {
-            return self.secureUrl(self.optimalSize()["url"].stringValue)
+            let secureUrlStr = self.secureUrl(self.optimalSize()["url"].stringValue)
+            return secureUrlStr.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? secureUrlStr
         }
     }
     
