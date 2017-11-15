@@ -35,31 +35,35 @@ public class Panic: NSObject, UIWebViewDelegate {
         let url = Environment.absoluteUrl(Configuration.panicUrl())
         ConManager.GET(url, success: { response in
             if let data:Data = response?.data {
-                let json = JSON(data: data)
-                if let disabled: Bool = json["disabled"].bool, disabled == true {
-                    //Disabled
-                    let _webUrl = Environment.absoluteUrl(json["disabledUrl"].string)
-                    if _webUrl.length > 0 {
-                        self.webUrl = _webUrl
-                        self.showWeb()
-                        self.timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.check), userInfo: nil, repeats: false)
+                do {
+                    let json = try JSON(data: data)
+                    if let disabled: Bool = json["disabled"].bool, disabled == true {
+                        //Disabled
+                        let _webUrl = Environment.absoluteUrl(json["disabledUrl"].string)
+                        if _webUrl.length > 0 {
+                            self.webUrl = _webUrl
+                            self.showWeb()
+                            self.timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.check), userInfo: nil, repeats: false)
+                        } else {
+                            self.removeWebView()
+                            return
+                        }
+                    } else if let minVersion: String = json["minVersion"].string, Device().appVersion!.isOlderThan(minVersion) {
+                        //Older version
+                        let _webUrl = Environment.absoluteUrl(json["minVersionUrl"].string)
+                        if _webUrl.length > 0 {
+                            self.webUrl = _webUrl
+                            self.showWeb()
+                        } else {
+                            self.removeWebView()
+                            return
+                        }
                     } else {
                         self.removeWebView()
                         return
                     }
-                } else if let minVersion: String = json["minVersion"].string, Device().appVersion!.isOlderThan(minVersion) {
-                    //Older version
-                    let _webUrl = Environment.absoluteUrl(json["minVersionUrl"].string)
-                    if _webUrl.length > 0 {
-                        self.webUrl = _webUrl
-                        self.showWeb()
-                    } else {
-                        self.removeWebView()
-                        return
-                    }
-                } else {
-                    self.removeWebView()
-                    return
+                } catch {
+                    
                 }
             }
         }, failed: { error in

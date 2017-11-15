@@ -141,8 +141,12 @@ public struct Device {
                               encoding: JSONEncoding.default,
                               success: { (responseData) in
                                 if let data: Data = responseData?.data {
-                                    let json = JSON(data: data)
-                                    self.store(json)
+                                    do {
+                                        let json = try JSON(data: data)
+                                        self.store(json)
+                                    } catch {
+                                        
+                                    }
                                 }
         })
     }

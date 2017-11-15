@@ -176,50 +176,54 @@ open class ByvPaginatedViewController: UIViewController {
                     section.isLoadingData = false
                     var newItems:[Any] = []
                     if let data: Data = responseData?.data {
-                        let json = JSON(data: data)
-                        if let jsonArray = json.array {
-                            section.page = section.page + 1
-                            let newItemsCount = jsonArray.count
-                            let sectionIndex = self.sectionIndex(section)
-                            let lastIndex = section.items.count
-                            let lastIndexPath = IndexPath(row: lastIndex, section: sectionIndex)
-                            newItems = self.filterItems(jsonArray, in: self.sectionIndex(section))
-                            self.tableView.beginUpdates()
-                            self.tableView.deleteRows(at: [lastIndexPath], with: section.deleteRowAnimation)
-                            if newItems.count > 0 {
-                                var indexes: Array<IndexPath> = []
-                                for i in lastIndex...lastIndex+newItems.count - 1 {
-                                    indexes.append(IndexPath(row: i, section: sectionIndex))
-                                }
-                                section.items += newItems
-                                self.tableView.insertRows(at: indexes, with: section.insertRowAnimation)
-                            }
-                            if (newItemsCount < section.limit) {
-                                section.isFullLoaded = true
-                                if sectionIndex + 1 < self.sections.count {
-                                    //More sections
-                                    let newSection = self.sections[sectionIndex + 1]
-                                    if newSection.showLoadingCell || !newSection.automaticallyLoadNextPage {
-                                        self.tableView.insertSections([sectionIndex + 1], with: newSection.insertRowAnimation)
-                                        let indexPath = IndexPath(row: 0, section: sectionIndex + 1)
-                                        self.tableView.insertRows(at: [indexPath], with: newSection.insertRowAnimation)
+                        do {
+                            let json = try JSON(data: data)
+                            if let jsonArray = json.array {
+                                section.page = section.page + 1
+                                let newItemsCount = jsonArray.count
+                                let sectionIndex = self.sectionIndex(section)
+                                let lastIndex = section.items.count
+                                let lastIndexPath = IndexPath(row: lastIndex, section: sectionIndex)
+                                newItems = self.filterItems(jsonArray, in: self.sectionIndex(section))
+                                self.tableView.beginUpdates()
+                                self.tableView.deleteRows(at: [lastIndexPath], with: section.deleteRowAnimation)
+                                if newItems.count > 0 {
+                                    var indexes: Array<IndexPath> = []
+                                    for i in lastIndex...lastIndex+newItems.count - 1 {
+                                        indexes.append(IndexPath(row: i, section: sectionIndex))
                                     }
-                                    self.loadPage()
+                                    section.items += newItems
+                                    self.tableView.insertRows(at: indexes, with: section.insertRowAnimation)
                                 }
+                                if (newItemsCount < section.limit) {
+                                    section.isFullLoaded = true
+                                    if sectionIndex + 1 < self.sections.count {
+                                        //More sections
+                                        let newSection = self.sections[sectionIndex + 1]
+                                        if newSection.showLoadingCell || !newSection.automaticallyLoadNextPage {
+                                            self.tableView.insertSections([sectionIndex + 1], with: newSection.insertRowAnimation)
+                                            let indexPath = IndexPath(row: 0, section: sectionIndex + 1)
+                                            self.tableView.insertRows(at: [indexPath], with: newSection.insertRowAnimation)
+                                        }
+                                        self.loadPage()
+                                    }
+                                } else {
+                                    if section.showLoadingCell || !section.automaticallyLoadNextPage {
+                                        let indexPath = IndexPath(row: section.items.count, section: sectionIndex)
+                                        self.tableView.insertRows(at: [indexPath], with: section.insertRowAnimation)
+                                    }
+                                }
+                                
+                                self.tableView.endUpdates()
+                                self.checkEmptyView()
                             } else {
-                                if section.showLoadingCell || !section.automaticallyLoadNextPage {
-                                    let indexPath = IndexPath(row: section.items.count, section: sectionIndex)
-                                    self.tableView.insertRows(at: [indexPath], with: section.insertRowAnimation)
-                                }
+                                section.isLoadingData = false
+                                section.isFullLoaded = true
+                                self.tableView.reloadData()
+                                self.checkEmptyView()
                             }
-                            
-                            self.tableView.endUpdates()
-                            self.checkEmptyView()
-                        } else {
-                            section.isLoadingData = false
-                            section.isFullLoaded = true
-                            self.tableView.reloadData()
-                            self.checkEmptyView()
+                        } catch {
+                            print("JSON parse ERROR")
                         }
                     }
                     self.refreshControl.endRefreshing()

@@ -42,7 +42,12 @@ public struct Uploader {
                 
                 upload.responseData { responseData in
                     if let data = responseData.data {
-                        completion?(JSON(data: data))
+                        do {
+                            let json = try JSON(data: data)
+                            completion?(json)
+                        } catch {
+                            completion?(nil)
+                        }
                     } else {
                         completion?(nil)
                     }

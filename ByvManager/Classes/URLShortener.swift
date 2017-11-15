@@ -24,9 +24,13 @@ public struct URLShortener {
                         background: background,
                         success: { (response) in
                             if let data: Data = response?.data {
-                                let json = JSON(data: data)
-                                if let id: String = json["id"].string {
-                                    completion?(id)
+                                do {
+                                    let json = try JSON(data: data)
+                                    if let id: String = json["id"].string {
+                                        completion?(id)
+                                    }
+                                } catch {
+                                    completion?(longUrl)
                                 }
                             }
                             
@@ -47,9 +51,13 @@ public struct URLShortener {
                         background: background,
                         success: { (response) in
                             if let data: Data = response?.data {
-                                let json = JSON(data: data)
-                                if let longUrl: String = json["longUrl"].string {
-                                    completion?(longUrl)
+                                do {
+                                    let json = try JSON(data: data)
+                                    if let longUrl: String = json["longUrl"].string {
+                                        completion?(longUrl)
+                                    }
+                                } catch {
+                                    completion?(shortUrl)
                                 }
                             }
                             

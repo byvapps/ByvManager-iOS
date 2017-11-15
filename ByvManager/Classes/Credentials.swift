@@ -18,22 +18,28 @@ public struct Credentials {
     
     init(_ data: Data) {
         self.data = data
-        let json = JSON(data: data)
-        if let token_type = json[Credentials.tokenTypeKey()].string {
-            self.token_type = token_type
-        }
-        if let access_token = json[Credentials.accessTokenKey()].string {
-            self.access_token = access_token
-        } else {
+        do {
+            let json = try JSON(data: data)
+            if let token_type = json[Credentials.tokenTypeKey()].string {
+                self.token_type = token_type
+            }
+            if let access_token = json[Credentials.accessTokenKey()].string {
+                self.access_token = access_token
+            } else {
+                self.access_token = ""
+            }
+            if let interval = json[Credentials.expiresKey()].int {
+                self.expires = Date(timeIntervalSinceNow: TimeInterval(interval))
+            }
+            if let refresh_token = json[Credentials.refreshTokenKey()].string {
+                self.refresh_token = refresh_token
+            } else {
+                self.refresh_token = ""
+            }
+        } catch {
             self.access_token = ""
-        }
-        if let interval = json[Credentials.expiresKey()].int {
-            self.expires = Date(timeIntervalSinceNow: TimeInterval(interval))
-        }
-        if let refresh_token = json[Credentials.refreshTokenKey()].string {
-            self.refresh_token = refresh_token
-        } else {
             self.refresh_token = ""
+            print("JSON parse ERROR")
         }
     }
     
@@ -42,8 +48,8 @@ public struct Credentials {
     @discardableResult
     public static func store(_ responseData: Data?) -> Credentials? {
         if let data = responseData {
-            var credentials = Credentials(data)
-            if credentials.access_token.characters.count > 0 {
+            let credentials = Credentials(data)
+            if credentials.access_token.length > 0 {
                 credentials.store()
                 NotificationCenter.default.post(name: ByvNotifications.credUpdated, object: nil)
                 return credentials

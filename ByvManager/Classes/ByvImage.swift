@@ -165,8 +165,8 @@ extension BvWebImageView {
         self.urlStr = Environment.absoluteUrl(bvImage.urlStr)
         let imageDownloader = af_imageDownloader ?? UIImageView.af_sharedImageDownloader
         let imageCache = imageDownloader.imageCache
-        if let urlStr = self.urlStr, let url = URL(string: urlStr), let cachedImage = imageCache?.image(for: URLRequest(url: url), withIdentifier: nil) {
-            self.image = cachedImage
+        if let urlStr = self.urlStr, let url = URL(string: urlStr), let _ = imageCache?.image(for: URLRequest(url: url), withIdentifier: nil) {
+            self.af_setImage(withURL: url)
             return
         }
         

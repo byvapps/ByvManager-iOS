@@ -362,21 +362,25 @@ public struct ConManager {
         var error:ConError = ConError(status: _code, error_id: "", error_description: "", localized_description: _error.localizedDescription, response: response)
         
         if let data:Data = response?.data {
-            let json = JSON(data: data)
-            if let status: Int = json["status"].int {
-                error.status = status
-            }
-            if let error_id: String = json["error_id"].string {
-                error.error_id = error_id
-            }
-            if let error_description: String = json["error_description"].string {
-                error.error_description = error_description
-                error.localized_description = error_description
-            }
-            if let localized_description: String = json["localized_description"].string {
-                error.localized_description = localized_description
-            } else if let message: String = json["message"].string {
-                error.localized_description = message
+            do {
+                let json = try JSON(data: data)
+                if let status: Int = json["status"].int {
+                    error.status = status
+                }
+                if let error_id: String = json["error_id"].string {
+                    error.error_id = error_id
+                }
+                if let error_description: String = json["error_description"].string {
+                    error.error_description = error_description
+                    error.localized_description = error_description
+                }
+                if let localized_description: String = json["localized_description"].string {
+                    error.localized_description = localized_description
+                } else if let message: String = json["message"].string {
+                    error.localized_description = message
+                }
+            } catch {
+                print("JSON parse ERROR")
             }
         }
         return error
