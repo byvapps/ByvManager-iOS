@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ByvManager'
-  s.version          = '0.2.21'
+  s.version          = '1.0.0'
   s.summary          = 'An utility module'
 
 # This description is used to generate tags and improve search results.
@@ -29,6 +29,7 @@ An utility module for internal use in B&V Apps
   s.social_media_url = 'https://twitter.com/byvapps'
 
   s.ios.deployment_target = '9.0'
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
 
   s.source_files = 'ByvManager/Classes/**/*'
   
