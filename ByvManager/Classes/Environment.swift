@@ -51,6 +51,10 @@ public enum Environment {
     }
     
     public static func getAbsoluteURL(_ url: String?) -> URL? {
-        return URL(string: Environment.absoluteUrl(url))
+        if let urlFinal = URL(string: Environment.absoluteUrl(url)) {
+            return urlFinal
+        } else {
+            return URL(string: Environment.absoluteUrl(url?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)))
+        }
     }
 }

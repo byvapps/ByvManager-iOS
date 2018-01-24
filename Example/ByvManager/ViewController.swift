@@ -43,7 +43,12 @@ class ViewController: UIViewController {
                        background: false,
                        success: { (responseData) in
                         if let data:Data = responseData?.data {
-                            let json = JSON(data: data)
+                            var json = JSON([:])
+                            do {
+                                json = try JSON(data: data)
+                            } catch {
+                                print("json error")
+                            }
                             var pages = 0
                             var total = 0
                             if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
