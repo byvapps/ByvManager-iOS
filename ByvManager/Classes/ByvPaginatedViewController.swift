@@ -104,7 +104,7 @@ open class ByvPaginatedViewController: UIViewController {
     }
     
     // Override to customize cell
-    open func updateCell(cell: UITableViewCell, with item: Any) {
+    open func updateCell(cell: UITableViewCell, with item: Any, at indexPath: IndexPath) {
         if let ip = self.tableView.indexPath(for: cell) {
             cell.textLabel?.text = "section: \(ip.section) - row: \(ip.row)"
         }
@@ -324,7 +324,7 @@ extension ByvPaginatedViewController: UITableViewDataSource, UITableViewDelegate
             let item = section.items[indexPath.row]
             let cell  : UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifierFor(indexPath: indexPath, item: item), for:indexPath)
             
-            updateCell(cell: cell, with: item)
+            updateCell(cell: cell, with: item, at:indexPath)
             
             return cell
         }

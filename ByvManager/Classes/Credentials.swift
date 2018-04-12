@@ -103,7 +103,7 @@ public struct Credentials {
         if let path = Configuration.get("access_token") {
             return path as! String
         } else {
-            return "access_token"
+            return "accessToken"
         }
     }
     
@@ -111,7 +111,7 @@ public struct Credentials {
         if let path = Configuration.get("refresh_token") {
             return path as! String
         } else {
-            return "refresh_token"
+            return "refreshToken"
         }
     }
     

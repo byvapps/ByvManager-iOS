@@ -28,7 +28,7 @@ class LoginViewController: UIViewController {
 
     @IBAction func save(_ sender: AnyObject) {
         self.view .endEditing(true)
-        Auth.login(mail: mailField.text!, password: passField.text!, background: false, success:{ (response) in
+        ByvAuth.login(mail: mailField.text!, password: passField.text!, background: false, success:{ (response) in
             self.dismiss(animated: true, completion: nil)
         })
     }
@@ -41,14 +41,14 @@ class LoginViewController: UIViewController {
 
     @IBAction func requestResetPassword(_ sender: AnyObject) {
         self.view .endEditing(true)
-        Auth.requestResetPassword(mail: mailField.text!, background: false, success:{ (response) in
+        ByvAuth.requestResetPassword(mail: mailField.text!, background: false, success:{ (response) in
             self.dismiss(animated: true, completion: nil)
         })
     }
     
     @IBAction func MagicLink(_ sender: AnyObject) {
         self.view .endEditing(true)
-        Auth.requestMagic(mail: mailField.text!, background: false, success:{ (response) in
+        ByvAuth.requestMagic(mail: mailField.text!, background: false, success:{ (response) in
             self.dismiss(animated: true, completion: nil)
         })
     }

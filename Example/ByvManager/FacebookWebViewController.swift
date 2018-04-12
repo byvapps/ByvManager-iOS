@@ -47,7 +47,7 @@ class FacebookWebViewController: UIViewController, UIWebViewDelegate {
             }
             
             if let code = params["code"] as! String? {
-                Auth.socialLogin(code: code, success: { (data) in
+                ByvAuth.socialLogin(code: code, success: { (data) in
                     self.close(sender: nil)
                 })
                 

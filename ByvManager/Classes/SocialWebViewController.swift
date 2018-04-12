@@ -141,7 +141,7 @@ public class SocialWebViewController: UIViewController, UIWebViewDelegate {
     public func webViewDidFinishLoad(_ webView: UIWebView) {
         
         if let code = _code {
-            Auth.socialLogin(code: code, background: false, success: { (data) in
+            ByvAuth.socialLogin(code: code, background: false, success: { (data) in
                 self.close(sender: nil)
             })
             _code = nil

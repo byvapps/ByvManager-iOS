@@ -66,7 +66,7 @@ class PaginatedTestViewController: ByvPaginatedViewController {
     }
     
     // Override to customize cell
-    override func updateCell(cell: UITableViewCell, with item: Any) {
+    override func updateCell(cell: UITableViewCell, with item: Any, at indexPath: IndexPath) {
         if let json:JSON = item as? JSON {
             cell.textLabel?.text = json["name"].stringValue
         }

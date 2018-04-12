@@ -10,7 +10,7 @@ import Foundation
 import SVProgressHUD
 import ByvUtils
 
-public struct Auth {
+public struct ByvAuth {
     
     private static let client_id = Configuration.auth("byv_client_id") as! String
     private static let client_secret = Configuration.auth("byv_client_secret") as! String
@@ -20,7 +20,7 @@ public struct Auth {
                                   success: SuccessHandler? = nil,
                                   failed: ErrorHandler? = nil,
                                   completion: CompletionHandler? = nil) {
-        ConManager.POST(url_token(),
+        ConManager.POST(url_token() + "/\(params["grant_type"] ?? "")",
                         params: params,
                         background: background,
                         success: { (response) in
@@ -43,16 +43,14 @@ public struct Auth {
                                 success: SuccessHandler? = nil,
                                 failed: ErrorHandler? = nil,
                                 completion: CompletionHandler? = nil) {
-        var params: Params = ["client_id": client_id,
-                              "client_secret": client_secret,
-                              "grant_type": "signup",
+        var params: Params = ["grant_type": "signup",
                               "username": mail,
                               "password": password]
         if let name:String = name {
             params["name"] = name
         }
         
-        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
+        ByvAuth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func login(mail: String,
@@ -61,13 +59,11 @@ public struct Auth {
                              success: SuccessHandler? = nil,
                              failed: ErrorHandler? = nil,
                              completion: CompletionHandler? = nil) {
-        let params: Params = ["client_id": client_id,
-                              "client_secret": client_secret,
-                              "grant_type": "password",
+        let params: Params = ["grant_type": "login",
                               "username": mail,
                               "password": password]
         
-        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
+        ByvAuth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
    
     public static func logout(background: Bool = true,
@@ -75,14 +71,13 @@ public struct Auth {
                              failed: ErrorHandler? = nil,
                              completion: CompletionHandler? = nil) {
         
-        ConManager.POST(url_logout(),
-                        params: nil,
-                        auth: true,
-                        background: background,
-                        success: { (response) in
-                            Credentials.removeCredentials()
-                            success?(response)
-        }, failed: failed, completion: completion)
+        
+        ConManager.POST(url_logout(), auth: false, background: background, success: { (response) in
+            success?(response)
+        }, failed: failed) {
+            Credentials.removeCredentials()
+            completion?()
+        }
     }
 
     
@@ -91,12 +86,10 @@ public struct Auth {
                                      success: SuccessHandler? = nil,
                                      failed: ErrorHandler? = nil,
                                      completion: CompletionHandler? = nil) {
-        let params: Params = ["client_id": client_id,
-                              "client_secret": client_secret,
-                              "grant_type": "code",
+        let params: Params = ["grant_type": "code",
                               "code": code]
         
-        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
+        ByvAuth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func requestMagic(mail: String,
@@ -119,12 +112,10 @@ public struct Auth {
                                     success: SuccessHandler? = nil,
                                     failed: ErrorHandler? = nil,
                                     completion: CompletionHandler? = nil) {
-        let params: Params = ["client_id": client_id,
-                              "client_secret": client_secret,
-                              "grant_type": "magic_link",
+        let params: Params = ["grant_type": "magic_link",
                               "code": code]
         
-        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
+        ByvAuth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func requestResetPassword(mail: String,
@@ -148,20 +139,18 @@ public struct Auth {
                                   success: SuccessHandler? = nil,
                                   failed: ErrorHandler? = nil,
                                   completion: CompletionHandler? = nil) {
-        let params: Params = ["client_id": client_id,
-                              "client_secret": client_secret,
-                              "grant_type": "password_reset",
+        let params: Params = ["grant_type": "password_reset",
                               "code": code,
                               "password": password]
         
-        Auth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
+        ByvAuth.authToken(params: params, background: background, success: success, failed: failed, completion: completion)
     }
     
     public static func appOpenned(_ url: URL) -> Bool {
         if url.path.contains(url_request_magic_callback()) {
             // Magic link
             if let code = url.getQueryItemValueForKey("code") {
-                Auth.magicLogin(code: code, background: false, success: { (response) in
+                ByvAuth.magicLogin(code: code, background: false, success: { (response) in
                     if ByvManager.debugMode {
                         print("MAGIC WORKING")
                     }
@@ -186,7 +175,7 @@ public struct Auth {
                     UIAlertAction in
                     NSLog("OK Pressed")
                     if let password = alertController.textFields?[0].text {
-                        Auth.resetLogin(code: code, password: password, background: false, success: { (response) in
+                        ByvAuth.resetLogin(code: code, password: password, background: false, success: { (response) in
                             if ByvManager.debugMode {
                                 print("RESET WORKING")
                             }

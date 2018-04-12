@@ -40,7 +40,7 @@ class RegisterViewController: UIViewController {
     
     @IBAction func save(_ sender: AnyObject) {
         self.view.endEditing(true)
-        Auth.register(mail: mailField.text!, password: passField.text!, name: nameField.text!, background: false, success:{ (response) in
+        ByvAuth.register(mail: mailField.text!, password: passField.text!, name: nameField.text!, background: false, success:{ (response) in
             self.dismiss(animated: true, completion: nil)
         })
     }

@@ -100,7 +100,7 @@ public class ByvManager {
     
     @discardableResult
     public class func checkUrl(_ url: URL) -> Bool {
-        if Auth.appOpenned(url) {
+        if ByvAuth.appOpenned(url) {
             return true
         }
         

@@ -78,14 +78,14 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                 refreshTokens { [weak self] succeeded, accessToken, refreshToken in
                     guard let strongSelf = self else { return }
                     
-                    strongSelf.lock.lock() ; defer { strongSelf.lock.unlock() }
-                    
                     if let accessToken = accessToken, let refreshToken = refreshToken {
                         strongSelf.accessToken = accessToken
                         strongSelf.refreshToken = refreshToken
                     }
                     
-                    strongSelf.requestsToRetry.forEach { $0(succeeded, 0.0) }
+                    strongSelf.requestsToRetry.forEach {
+                        $0(succeeded, 0.0)
+                    }
                     strongSelf.requestsToRetry.removeAll()
                 }
             }
@@ -99,17 +99,18 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
     private func refreshTokens(completion: @escaping RefreshCompletion) {
         guard !isRefreshing else { if ByvManager.debugMode {print("intento de refresh")}; return }
         
-        if let rt: String = refreshToken {
+        if let refreshToken: String = refreshToken, let accessToken: String = accessToken {
             
             isRefreshing = true
             
             let urlString = "\(Environment.baseUrl())/\(url_token())"
             
             let parameters: [String: Any] = [
-                "refresh_token": rt,
+                "refreshToken": refreshToken,
                 "client_id": clientID,
                 "client_secret": clientSecret,
-                "grant_type": "refresh_token"
+                "accessToken": accessToken,
+                "grant_type": "refresh"
             ]
             
             if ByvManager.debugMode {
@@ -139,13 +140,13 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                         }
                         if response.response?.statusCode == 401 {
                             //Refresh token invalid
-                            Credentials.removeCredentials()
+                            ByvAuth.logout()
                             completion(false, nil, nil)
                         }
                     }
             }
         } else {
-            Credentials.removeCredentials()
+            ByvAuth.logout()
             completion(false, nil, nil)
         }
     }

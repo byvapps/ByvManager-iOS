@@ -22,6 +22,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         socialWebView.loadPreWeb()
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.logoutNoti),
+            name: ByvNotifications.logout,
+            object: nil)
+        
         /*
         let token = FIRInstanceID.instanceID().token()
         print("InstanceID token: \(token!)")
@@ -36,37 +42,42 @@ class ViewController: UIViewController {
         }
         */
         
-        ConManager.GET("api/search",
-                       params: ["offset": 0,
-                                "limit": 10],
-                       auth: false,
-                       background: false,
-                       success: { (responseData) in
-                        if let data:Data = responseData?.data {
-                            var json = JSON([:])
-                            do {
-                                json = try JSON(data: data)
-                            } catch {
-                                print("json error")
-                            }
-                            var pages = 0
-                            var total = 0
-                            if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
-                                let pagesInt: Int = Int(pagesStr),
-                                let totalStr: String = responseData?.response?.allHeaderFields["X-Total-Count"] as? String,
-                                let totalInt: Int = Int(totalStr){
-                                pages = pagesInt
-                                total = totalInt
-                            }
-                            
-                            print("START")
-                            print("Pages: \(pages)")
-                            print("Count: \(total)")
-                            
-                            debugPrint(json)
-                            print("END")
-                        }
-        });
+//        ConManager.GET("api/search",
+//                       params: ["offset": 0,
+//                                "limit": 10],
+//                       auth: false,
+//                       background: false,
+//                       success: { (responseData) in
+//                        if let data:Data = responseData?.data {
+//                            var json = JSON([:])
+//                            do {
+//                                json = try JSON(data: data)
+//                            } catch {
+//                                print("json error")
+//                            }
+//                            var pages = 0
+//                            var total = 0
+//                            if let pagesStr: String = responseData?.response?.allHeaderFields["X-Total-Pages"] as? String,
+//                                let pagesInt: Int = Int(pagesStr),
+//                                let totalStr: String = responseData?.response?.allHeaderFields["X-Total-Count"] as? String,
+//                                let totalInt: Int = Int(totalStr){
+//                                pages = pagesInt
+//                                total = totalInt
+//                            }
+//                            
+//                            print("START")
+//                            print("Pages: \(pages)")
+//                            print("Count: \(total)")
+//                            
+//                            debugPrint(json)
+//                            print("END")
+//                        }
+//        });
+    }
+    
+    @objc func logoutNoti() {
+        print("\n\n\nloguedOut!!!\n\n\n")
+        self.updateView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,7 +86,9 @@ class ViewController: UIViewController {
     }
     
     private func updateView() {
-        tokenLbl.text = Credentials.token()
+        DispatchQueue.main.async {
+            self.tokenLbl.text = Credentials.token()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -111,9 +124,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func logout(_ sender: Any) {
-        Auth.logout(background: false, success: { (response) in
+        ByvAuth.logout(background: false, success: nil, failed: nil) {
             self.updateView()
-        })
+        }
     }
     
     func loginSocial(_ type: SocialType) {

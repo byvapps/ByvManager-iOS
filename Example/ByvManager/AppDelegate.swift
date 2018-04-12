@@ -20,7 +20,7 @@ class AppDelegate: ByvAppDelegate {
  */
         if super.application(application, didFinishLaunchingWithOptions: launchOptions) {
             
-            ByvManager.setEnvironment(.productionEnvironment)
+            ByvManager.setEnvironment(.developmentEnvironment)
             
             return true
         }

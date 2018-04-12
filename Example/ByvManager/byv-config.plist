@@ -46,7 +46,7 @@
 	<key>baseUrl</key>
 	<dict>
 		<key>development</key>
-		<string>http://192.168.1.108:3000</string>
+		<string>https://playground.byvapps.com:9998</string>
 		<key>production</key>
 		<string>http://playground.byvapps.com</string>
 	</dict>
@@ -55,9 +55,9 @@
 	<key>panic</key>
 	<dict>
 		<key>development</key>
-		<string>panic/api/check/ios</string>
+		<string>api/panic/ios</string>
 		<key>production</key>
-		<string>panic/api/check/ios</string>
+		<string>api/panic/ios</string>
 	</dict>
 </dict>
 </plist>

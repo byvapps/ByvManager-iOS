@@ -14,7 +14,7 @@ public struct Device {
     
     public static var autoResetBadge = true
     
-    var deviceId: Int?
+    var deviceId: String?
     var uid: String
     var name: String?
     var os: String
@@ -50,7 +50,7 @@ public struct Device {
         }
         let stored = JSON(parseJSON: jsonStr)
         
-        if let id = stored["id"].int {
+        if let id = stored["_id"].string {
             self.deviceId = id
         }
         
@@ -200,7 +200,7 @@ public struct Device {
     }
     
     private func store(_ json: JSON?) {
-        if json?["id"].int != nil {
+        if json?["_id"].string != nil {
             let defs = UserDefaults.standard
             defs.set(json?.rawString(), forKey: "deviceJsonData")
             defs.synchronize()

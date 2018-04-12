@@ -14,7 +14,7 @@ public func url_devices() -> String {
     if let path = Configuration.override("DEVICES_URL") as? String {
         return path
     } else {
-        return "device/api/devices"
+        return "api/devices"
     }
 }
 
@@ -22,12 +22,12 @@ public func url_token() -> String {
     if let path = Configuration.override("TOKEN_URL") as? String {
         return path
     } else {
-        return "auth/token"
+        return "api/session"
     }
 }
 
 public func url_request_magic() -> String {
-    if let path = Configuration.override("TOKEN_URL") as? String {
+    if let path = Configuration.override("MAGIC_REQUEST_URL") as? String {
         return path
     } else {
         return "auth-password/api/magic"
@@ -35,7 +35,7 @@ public func url_request_magic() -> String {
 }
 
 public func url_request_magic_callback() -> String {
-    if let path = Configuration.override("TOKEN_URL") as? String {
+    if let path = Configuration.override("MAGIC_CALLBACK_URL") as? String {
         return path
     } else {
         return "auth-password/magic/callback"
@@ -43,7 +43,7 @@ public func url_request_magic_callback() -> String {
 }
 
 public func url_request_reset_password() -> String {
-    if let path = Configuration.override("TOKEN_URL") as? String {
+    if let path = Configuration.override("RESETPASS_REQUEST_URL") as? String {
         return path
     } else {
         return "auth-password/api/reset"
@@ -51,13 +51,13 @@ public func url_request_reset_password() -> String {
 }
 
 public func url_request_reset_password_callback() -> String {
-    if let path = Configuration.override("TOKEN_URL") as? String {
+    if let path = Configuration.override("RESETPASS_CALLBACK_URL") as? String {
         return path
     } else {
         return "auth-password/reset/callback"
     }
 }
-        
+
 ///auth-password/reset/callback
 
 public func url_token_social() -> String {
@@ -112,7 +112,7 @@ public func url_logout() -> String {
     if let path = Configuration.override("LOGOUT_URL") as? String {
         return path
     } else {
-        return "auth/logout"
+        return "api/session/logout"
     }
 }
 
@@ -120,7 +120,7 @@ public func url_profile() -> String {
     if let path = Configuration.override("PROFILE_URL") as? String {
         return path
     } else {
-        return "api/profile"
+        return "api/session/me"
     }
 }
 
