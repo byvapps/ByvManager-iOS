@@ -103,7 +103,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
             
             isRefreshing = true
             
-            let urlString = "\(Environment.baseUrl())/\(url_token())"
+            let urlString = "\(Environment.baseUrl())/\(url_token())/refresh"
             
             let parameters: [String: Any] = [
                 "refreshToken": refreshToken,
@@ -144,6 +144,7 @@ public class OAuthHandler: RequestAdapter, RequestRetrier {
                             completion(false, nil, nil)
                         }
                     }
+                    self.isRefreshing = false
             }
         } else {
             ByvAuth.logout()
