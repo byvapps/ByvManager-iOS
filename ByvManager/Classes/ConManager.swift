@@ -367,14 +367,14 @@ public struct ConManager {
                 if let status: Int = json["status"].int {
                     error.status = status
                 }
-                if let error_id: String = json["error_id"].string {
+                if let error_id: String = json["errorKey"].string {
                     error.error_id = error_id
                 }
-                if let error_description: String = json["error_description"].string {
+                if let error_description: String = json["errorDescription"].string {
                     error.error_description = error_description
                     error.localized_description = error_description
                 }
-                if let localized_description: String = json["localized_description"].string {
+                if let localized_description: String = json["localizedDescription"].string {
                     error.localized_description = localized_description
                 } else if let message: String = json["message"].string {
                     error.localized_description = message
